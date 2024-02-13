@@ -1,0 +1,10 @@
+name: hubverse-aws
+runtime:
+  name: python
+  options:
+    virtualenv: venv
+description: Hubverse infrastructure for AWS
+config:
+  pulumi:tags:
+    value:
+      pulumi:template: aws-python
