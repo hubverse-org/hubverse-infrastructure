@@ -1,14 +1,6 @@
-"""An Python Pulumi program that generates Hubverse resources in AWS."""
+"""Code needed to provision AWS resources for a new hub."""
 
 import pulumi_aws as aws
-import yaml
-
-def get_hubs() -> list[dict]:
-    '''Get the list of cloud-enabled hubs.'''
-    with open('hubs.yaml', 'r') as file:
-        hubs = yaml.safe_load(file).get('hubs')
-    return hubs
-
 
 def set_up_hub(hub_info:dict):
     '''
@@ -173,8 +165,3 @@ oidc_github = aws.iam.OpenIdConnectProvider(
     thumbprint_lists=["1b511abead59c6ce207077c0bf0e0043b1382612"],
     url="https://token.actions.githubusercontent.com",
 )
-
-hub_list = get_hubs()
-for hub in hub_list:
-    set_up_hub(hub)
-
