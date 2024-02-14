@@ -141,8 +141,8 @@ def set_up_hub(hub_info:dict):
                     "s3:PutoObjectAcl",
                 ],
                 resources=[
-                    f'arn:aws:s3:::hubverse-{bucket_name}',
-                    f'arn:aws:s3:::hubverse-{bucket_name}/*'
+                    f'arn:aws:s3:::{bucket_name}',
+                    f'arn:aws:s3:::{bucket_name}/*'
                 ],
             )
         ]
