@@ -25,4 +25,4 @@ jobs:
 
     - name: Copy files to S3
       run: |
-        aws s3 sync ./hubs.yaml s3://hubverse-hubverse-infrastructure-test --delete
+        aws s3 sync .hubs.yaml s3://hubverse-hubverse-infrastructure-test --delete
