@@ -17,7 +17,7 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          role-to-assume: arn:aws:iam::767397675902:role/hubverse-infrastructure-test-githubaction-role
+          role-to-assume: arn:aws:iam::767397675902:role/hubverse-pulumi-role
           aws-region: us-east-1
       - run: pip install -r requirements.txt
       - uses: pulumi/actions@v5
