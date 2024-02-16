@@ -2,3 +2,7 @@ hubs:
 - hub: hubverse-infrastructure-test
   org: Infectious-Disease-Modeling-Hubs
   repo: hubverse-infrastructure
+- hub: example-complex-forecast-hub
+  org: Infectious-Disease-Modeling-Hubs
+  repo: example-complex-forecast-hub
+
