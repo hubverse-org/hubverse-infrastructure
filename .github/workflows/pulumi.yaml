@@ -35,7 +35,7 @@ jobs:
           aws-region: us-east-1
 
       - name: Previewing infrastructure 👀
-        uses: pulumi/actions@v4
+        uses: pulumi/actions@v5
         with:
           command: preview
           work-dir: ./pulumi
