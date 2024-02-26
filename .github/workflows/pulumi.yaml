@@ -4,6 +4,11 @@ on:
   pull_request:
     branches: main
 
+permissions:
+  contents: read
+  id-token: write
+  pull-requests: write
+
 jobs:
   preview:
     name: Preview
@@ -23,10 +28,11 @@ jobs:
       - name: Installing dependencies 📦️
         run: pip install -r requirements.txt
       
-      - name: Configure AWS credentials
+      - name: Configure AWS credentials 🔐
         uses: aws-actions/configure-aws-credentials@v1
         with:
           role-to-assume: arn:aws:iam::767397675902:role/hubverse-administration
+          aws-region: us-east-1
 
       - name: Previewing infrastructure 👀
         uses: pulumi/actions@v4
