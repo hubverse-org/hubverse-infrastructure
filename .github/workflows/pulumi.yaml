@@ -1,0 +1,35 @@
+name: Pulumi
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: main
+
+jobs:
+  preview:
+    name: Preview
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./pulumi
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
+
+      - name: Setup Python 🐍
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Installing dependencies 📦️
+        run: pip install -r requirements.txt
+
+      - name: Previewing infrastructure 👀
+        uses: pulumi/actions@v4
+        with:
+          command: preview
+          work-dir: ./pulumi
+          stack-name: hubverse/hubverse-aws/hubverse
+          comment-on-pr: true
+          comment-on-summary: true
+        env:
+          PULUMI_ACCESS_TOKEN: ${{ secrets.BSWEGER_PULUMI_DEMO }}
