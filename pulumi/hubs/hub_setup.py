@@ -1,6 +1,7 @@
 """Code needed to provision AWS resources for a new hub."""
 
 import pulumi_aws as aws
+from pulumi import ResourceOptions
 
 def set_up_hub(hub_info:dict):
     '''
@@ -81,7 +82,8 @@ def set_up_hub(hub_info:dict):
     bucket_read_policy = aws.s3.BucketPolicy(
         resource_name=bucket_read_policy_name,
         bucket=hub_bucket.id,
-        policy=s3_policy.json
+        policy=s3_policy.json,
+        opts=ResourceOptions(depends_on=[hub_bucket_public_access_block])
     )
 
     # Create the policy that defines who will be allowed to assume
