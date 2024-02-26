@@ -5,3 +5,6 @@ hubs:
 - hub: example-complex-forecast-hub
   org: Infectious-Disease-Modeling-Hubs
   repo: example-complex-forecast-hub
+- hub: hubverse-infrastructure-pr-testy
+  org: Infectious-Disease-Modeling-Hubs
+  repo: hubverse-infrastructure-pr-testy
