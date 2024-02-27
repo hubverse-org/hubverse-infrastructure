@@ -4,3 +4,6 @@ hubs:
 - hub: hubverse-infrastructure-test
   org: Infectious-Disease-Modeling-Hubs
   repo: hubverse-infrastructure
+- hub: hubverse-cloud
+  org: Infectious-Disease-Modeling-Hubs
+  repo: hubverse-cloud
