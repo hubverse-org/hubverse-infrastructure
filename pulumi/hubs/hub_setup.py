@@ -19,11 +19,11 @@ def set_up_hub(hub_info:dict):
     org = hub_info['org']
     hub = hub_info['hub']
 
-    bucket_name = f'hubverse-{hub}'
+    bucket_name = f'{hub}'
     bucket_write_policy_name = f'{hub}-write-bucket-policy'
     bucket_read_policy_name = f'{hub}-read-bucket-policy'
-    github_policy_name = f'{hub}-githubaction-policy'
-    github_role_name = f"{hub}-githubaction-role"
+    github_policy_name = f'{hub}'
+    github_role_name = f'{hub}'
     tags={'hub': hub}
 
 
@@ -40,7 +40,7 @@ def set_up_hub(hub_info:dict):
     # By default, new S3 buckets do not allow public access. Updating
     # those settings will allow us to create a bucket policy for public access.
     hub_bucket_public_access_block = aws.s3.BucketPublicAccessBlock(
-        resource_name=f'{bucket_name}-public-access-block',
+        resource_name=f'{hub}-public-access-block',
         bucket=hub_bucket.id,
         block_public_acls=True,
         ignore_public_acls=True,
@@ -143,6 +143,7 @@ def set_up_hub(hub_info:dict):
     )
     
     bucket_write_policy = aws.iam.Policy(
+        name=bucket_write_policy_name,
         resource_name=bucket_write_policy_name,
         description=f'Policy attached to {github_role_name}. It allows writing to the {bucket_name} S3 bucket',
         policy=s3_policy.json,
