@@ -1,7 +1,6 @@
+# This is an MVP config for getting hubs onboarded to the cloud via Pulumi. If we decide to
+# adopt Pulumi, the next step would be reading this information from each hub's admin.json config.
 hubs:
 - hub: hubverse-infrastructure-test
   org: Infectious-Disease-Modeling-Hubs
   repo: hubverse-infrastructure
-- hub: example-complex-forecast-hub
-  org: Infectious-Disease-Modeling-Hubs
-  repo: example-complex-forecast-hub
