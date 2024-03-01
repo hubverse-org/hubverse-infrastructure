@@ -27,13 +27,10 @@ def set_up_hub(hub_info:dict):
     tags={'hub': hub}
 
 
-    # Create an S3 bucket that has versioning enabled and a public read policy
+    # Create the hub's S3 bucket
     hub_bucket = aws.s3.Bucket(
         bucket_name,
         bucket=bucket_name,
-        versioning=aws.s3.BucketVersioningArgs(
-            enabled=True,
-        ),
         tags=tags
     )
 
