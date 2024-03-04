@@ -1,5 +1,6 @@
 name: Pulumi Update
 on:
+  workflow_dispatch:
   push:
     branches: main
 
