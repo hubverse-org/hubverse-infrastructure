@@ -1,7 +1,6 @@
-name: Pulumi
+name: Pulumi Update
 on:
-  workflow_dispatch:
-  pull_request:
+  push:
     branches: main
 
 permissions:
@@ -11,7 +10,7 @@ permissions:
 
 jobs:
   preview:
-    name: Preview
+    name: Deploy infrastructure changes
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -38,7 +37,7 @@ jobs:
       - name: Previewing infrastructure 👀
         uses: pulumi/actions@v5
         with:
-          command: preview
+          command: up
           work-dir: ./pulumi
           stack-name: bsweger/hubverse-aws/hubverse
           comment-on-pr: true
