@@ -21,7 +21,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Setup Python 🐍
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
@@ -29,7 +29,7 @@ jobs:
         run: pip install -r requirements.txt
       
       - name: Configure AWS credentials 🔐
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::767397675902:role/hubverse-administration
           aws-region: us-east-1
@@ -39,7 +39,7 @@ jobs:
         with:
           command: preview
           work-dir: ./pulumi
-          stack-name: hubverse/hubverse-aws/hubverse
+          stack-name: bsweger/hubverse-aws/hubverse
           comment-on-pr: true
           comment-on-summary: true
         env:
