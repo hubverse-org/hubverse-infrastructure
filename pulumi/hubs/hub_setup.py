@@ -132,17 +132,23 @@ def set_up_hub(hub_info:dict):
             aws.iam.GetPolicyDocumentStatementArgs(
                 actions=[
                     "s3:ListBucket",
-                    "s3:PutObject",
-                    "s3:PutoObjectAcl",
                 ],
                 resources=[
-                    f'arn:aws:s3:::{bucket_name}',
+                    f'arn:aws:s3:::{bucket_name}'
+                ],
+            ),
+            aws.iam.GetPolicyDocumentStatementArgs(
+                actions=[
+                    "s3:PutObject",
+                    "s3:PutObjectAcl",
+                ],
+                resources=[
                     f'arn:aws:s3:::{bucket_name}/*'
                 ],
             )
         ]
     )
-    
+
     bucket_write_policy = aws.iam.Policy(
         name=bucket_write_policy_name,
         resource_name=bucket_write_policy_name,
