@@ -27,13 +27,10 @@ def set_up_hub(hub_info:dict):
     tags={'hub': hub}
 
 
-    # Create an S3 bucket that has versioning enabled and a public read policy
+    # Create the hub's S3 bucket
     hub_bucket = aws.s3.Bucket(
         bucket_name,
         bucket=bucket_name,
-        versioning=aws.s3.BucketVersioningArgs(
-            enabled=True,
-        ),
         tags=tags
     )
 
@@ -86,6 +83,10 @@ def set_up_hub(hub_info:dict):
         opts=ResourceOptions(depends_on=[hub_bucket_public_access_block])
     )
 
+
+    # retrieve information about the hubverse account's OIDC github provider
+    oidc_github = aws.iam.get_open_id_connect_provider(url='https://token.actions.githubusercontent.com')
+
     # Create the policy that defines who will be allowed to assume
     # a role using the OIDC provider we create for GitHub Actions.
     # The conditions specify that only Github can assume the role.
@@ -102,12 +103,12 @@ def set_up_hub(hub_info:dict):
                 conditions=[
                     aws.iam.GetPolicyDocumentStatementConditionArgs(
                        test="StringEquals",
-                       variable=oidc_github.url.apply(lambda url: f'{url}:aud'),
+                       variable=f'{oidc_github.url}:aud',
                        values=['sts.amazonaws.com']
                     ),
                     aws.iam.GetPolicyDocumentStatementConditionArgs(
                         test="StringEquals",
-                        variable=oidc_github.url.apply(lambda url: f'{url}:sub'),
+                        variable=f'{oidc_github.url}:sub',
                         values=[f'repo:{org}/{repo}:ref:refs/heads/main']
                     ) 
                 ]
@@ -157,14 +158,3 @@ def set_up_hub(hub_info:dict):
         role=github_role.name,
         policy_arn=bucket_write_policy.id
     )
-
-# Create the OIDC provider
-# The thumbprint below was retrieved via AWS console on 2024-01-30
-# TODO: find a better place for this (it works, but don't love using
-# global variables)
-oidc_github = aws.iam.OpenIdConnectProvider(
-    "hubverse-github-actions",
-    client_id_lists=["sts.amazonaws.com"],
-    thumbprint_lists=["1b511abead59c6ce207077c0bf0e0043b1382612"],
-    url="https://token.actions.githubusercontent.com",
-)
