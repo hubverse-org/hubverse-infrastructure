@@ -41,6 +41,5 @@ jobs:
           work-dir: ./pulumi
           stack-name: bsweger/hubverse-aws/hubverse
           comment-on-pr: true
-          comment-on-summary: true
         env:
           PULUMI_ACCESS_TOKEN: ${{ secrets.BSWEGER_PULUMI_DEMO }}
