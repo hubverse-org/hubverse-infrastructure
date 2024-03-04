@@ -1,6 +1,5 @@
 name: Pulumi Update
 on:
-  workflow_dispatch:
   push:
     branches: main
 
@@ -10,7 +9,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  preview:
+  pulumi-update:
     name: Deploy infrastructure changes
     runs-on: ubuntu-latest
     defaults:
@@ -35,7 +34,7 @@ jobs:
           role-to-assume: arn:aws:iam::767397675902:role/hubverse-administration
           aws-region: us-east-1
 
-      - name: Previewing infrastructure 👀
+      - name: Updating infrastructure 🛠️
         uses: pulumi/actions@v5
         with:
           command: up

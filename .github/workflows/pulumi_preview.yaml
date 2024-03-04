@@ -10,7 +10,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  preview:
+  pulumi-preview:
     name: Preview infrastructure changes
     runs-on: ubuntu-latest
     defaults:
