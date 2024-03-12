@@ -8,4 +8,7 @@ hubs:
 - hub: hubverse-cloud
   org: Infectious-Disease-Modeling-Hubs
   repo: hubverse-cloud
+- hub: march-madness
+  org: Infectious-Disease-Modeling-Hubs
+  repo: march-madness
 
