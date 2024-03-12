@@ -73,6 +73,10 @@ def create_bucket_write_policy(hub_name: str):
                 actions=[
                     "s3:PutObject",
                     "s3:PutObjectAcl",
+                    "s3:GetObject",
+                    "s3:GetObjectAcl",
+                    "s3:DeleteObject"
+
                 ],
                 resources=[
                     f'arn:aws:s3:::{hub_name}/*'
