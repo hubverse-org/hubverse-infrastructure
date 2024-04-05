@@ -1,5 +1,5 @@
 import pulumi_aws as aws
-from pulumi import ResourceOptions
+from pulumi import ResourceOptions  # type: ignore
 
 
 def create_bucket(hub_name: str) -> aws.s3.Bucket:
@@ -66,7 +66,7 @@ def make_bucket_public(bucket: aws.s3.Bucket, bucket_name: str):
         # The dependency below ensures that the bucket's public access block has
         # already been updated to allow public access. Otherwise, trying to
         # apply the "everyone can read" policy will throw a 403.
-        opts=ResourceOptions(depends_on=[hub_bucket_public_access_block]),
+        opts=ResourceOptions(depends_on=[hub_bucket_public_access_block]),  # type: ignore
     )
 
 
