@@ -2,6 +2,7 @@ import pulumi_aws as aws
 from pulumi import ResourceOptions  # type: ignore
 
 
+
 def create_bucket(hub_name: str) -> aws.s3.Bucket:
     """
     Create a new S3 bucket for a hub.
@@ -42,7 +43,11 @@ def make_bucket_public(bucket: aws.s3.Bucket, bucket_name: str):
                 actions=[
                     "s3:GetObject",
                 ],
-                principals=[aws.iam.GetPolicyDocumentStatementPrincipalArgs(type="*", identifiers=["*"])],
+                principals=[
+                    aws.iam.GetPolicyDocumentStatementPrincipalArgs(
+                        type="*", identifiers=["*"]
+                    )
+                ],
                 resources=[f"arn:aws:s3:::{bucket_name}/*"],
             ),
             aws.iam.GetPolicyDocumentStatementArgs(
@@ -50,7 +55,11 @@ def make_bucket_public(bucket: aws.s3.Bucket, bucket_name: str):
                 actions=[
                     "s3:ListBucket",
                 ],
-                principals=[aws.iam.GetPolicyDocumentStatementPrincipalArgs(type="*", identifiers=["*"])],
+                principals=[
+                    aws.iam.GetPolicyDocumentStatementPrincipalArgs(
+                        type="*", identifiers=["*"]
+                    )
+                ],
                 resources=[f"arn:aws:s3:::{bucket_name}"],
             ),
         ]
@@ -66,7 +75,7 @@ def make_bucket_public(bucket: aws.s3.Bucket, bucket_name: str):
         # The dependency below ensures that the bucket's public access block has
         # already been updated to allow public access. Otherwise, trying to
         # apply the "everyone can read" policy will throw a 403.
-        opts=ResourceOptions(depends_on=[hub_bucket_public_access_block]),  # type: ignore
+        opts=ResourceOptions(depends_on=[hub_bucket_public_access_block]),
     )
 
 

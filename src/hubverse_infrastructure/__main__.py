@@ -2,7 +2,7 @@
 
 import yaml
 
-from hubs.hub_setup import set_up_hub
+from hubverse_infrastructure.hubs.hub_setup import set_up_hub
 
 
 def get_hubs() -> list[dict]:
