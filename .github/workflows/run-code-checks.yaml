@@ -4,6 +4,9 @@ run-name: ${{ github.action }} triggered by ${{ github.event_name }} from ${{ gi
 on:
   push:
   pull_request:
+    # to avoid duplicate workflow runs, don't run when PR is synchronized
+    # (which is the default) because it will run on the push
+    types: [opened, reopened, ready_for_review]
   workflow_dispatch:
 
 jobs:
@@ -13,8 +16,15 @@ jobs:
       - uses: actions/checkout@v4
         with:
             cache: true
+      - name: Set up PDM
+        # using the PDM action because actions/setup-python doesn't suppport
+        # caching for PDM out of the box
+        # https://github.com/pdm-project/setup-pdm?tab=readme-ov-file#why-do-i-need-this-action
+        uses: pdm-project/setup-pdm@v4
+        with:
+          cache: true
       - name: Install dependencies
-        run: pip install -r pulumi/requirements.txt
+        run: pdm install
       - name: lint
         run: ruff check
       - name: type check
