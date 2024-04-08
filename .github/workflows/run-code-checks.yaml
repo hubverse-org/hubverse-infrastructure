@@ -19,13 +19,12 @@ jobs:
         # caching for PDM out of the box
         # https://github.com/pdm-project/setup-pdm?tab=readme-ov-file#why-do-i-need-this-action
         uses: pdm-project/setup-pdm@v4
-        with:
-          cache: true
+        # with:
+        #   cache: true
       - name: Install dependencies
         run: |
           echo "installing project dependencies"
           pdm install
-          pdm sync
       - name: lint
         run: ruff check
       - name: type check
