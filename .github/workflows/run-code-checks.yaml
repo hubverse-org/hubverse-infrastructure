@@ -24,7 +24,11 @@ jobs:
         with:
           cache: true
       - name: Install dependencies
-        run: pdm install
+        run: |
+          echo "installing project dependencies"
+          pdm install
+          echo "installing dev dependencies"
+          pdm add --dev
       - name: lint
         run: ruff check
       - name: type check
