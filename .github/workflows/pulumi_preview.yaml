@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./pulumi
+        working-directory: ./src/hubverse_infrastructure
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v3
@@ -42,7 +42,7 @@ jobs:
         uses: pulumi/actions@v5
         with:
           command: preview
-          work-dir: ./pulumi
+          work-dir: ./src/hubverse_infrastructure
           stack-name: bsweger/hubverse-aws/hubverse
           comment-on-pr: true
         env:
