@@ -25,6 +25,7 @@ jobs:
         run: |
           echo "installing project dependencies"
           pdm install
+          pdm list
       - name: lint
         run: ruff check
       - name: type check
