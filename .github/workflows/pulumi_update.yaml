@@ -42,7 +42,6 @@ jobs:
         uses: pulumi/actions@v5
         with:
           command: up
-          work-dir: ./src/hubverse_infrastructure
           stack-name: bsweger/hubverse-aws/hubverse
           comment-on-pr: true
         env:
