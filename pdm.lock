@@ -5,7 +5,7 @@
 groups = ["default", "dev"]
 strategy = ["cross_platform", "inherit_metadata"]
 lock_version = "4.4.1"
-content_hash = "sha256:4b1c5cf63ace617620f8a57a01b42295c50db44d7e6a823beea0368b39e44248"
+content_hash = "sha256:0fc725ea8f4e36fd546872ebc277be7ec563be9ad7f3ae48a76cb460e6fee1fa"
 
 [[package]]
 name = "arpeggio"
@@ -280,6 +280,17 @@ groups = ["default"]
 files = [
     {file = "six-1.16.0-py2.py3-none-any.whl", hash = "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"},
     {file = "six-1.16.0.tar.gz", hash = "sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"},
+]
+
+[[package]]
+name = "types-pyyaml"
+version = "6.0.12.20240311"
+requires_python = ">=3.8"
+summary = "Typing stubs for PyYAML"
+groups = ["dev"]
+files = [
+    {file = "types-PyYAML-6.0.12.20240311.tar.gz", hash = "sha256:a9e0f0f88dc835739b0c1ca51ee90d04ca2a897a71af79de9aec5f38cb0a5342"},
+    {file = "types_PyYAML-6.0.12.20240311-py3-none-any.whl", hash = "sha256:b845b06a1c7e54b8e5b4c683043de0d9caf205e7434b3edc678ff2411979b8f6"},
 ]
 
 [[package]]

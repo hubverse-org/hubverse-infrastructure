@@ -21,6 +21,7 @@ dev = [
     "pytest>=8.1",
     "mypy",
     "ruff",
+    "types-PyYAML",
 ]
 
 [build-system]
