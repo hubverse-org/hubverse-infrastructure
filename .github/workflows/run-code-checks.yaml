@@ -1,11 +1,4 @@
-<<<<<<< HEAD
-name: run-code-checks
-run-name: ${{ github.action }} triggered by ${{ github.event_name }} from ${{ github.actor }}
-||||||| parent of cc89c36 (Update workflows to revert PDM changes and respect new src layout)
-name: run-code-checks
-=======
-name: Code Checks
->>>>>>> cc89c36 (Update workflows to revert PDM changes and respect new src layout)
+name: Run Code Checks
 
 on:
   push:
@@ -16,24 +9,8 @@ jobs:
   run-checks:
     runs-on: ubuntu-latest
     steps:
-<<<<<<< HEAD
       - uses: actions/checkout@v4
-||||||| parent of cc89c36 (Update workflows to revert PDM changes and respect new src layout)
-      - uses: actions/checkout@v4
-      - name: Set up PDM
-        # using the PDM action because actions/setup-python doesn't suppport
-        # caching for PDM out of the box
-        # https://github.com/pdm-project/setup-pdm?tab=readme-ov-file#why-do-i-need-this-action
-        uses: pdm-project/setup-pdm@v4
-=======
-      - name: Checkout 🛎️
-        uses: actions/checkout@v4
-
-      - name: Set up Python 🐍
-        uses: actions/setup-python@v5
->>>>>>> cc89c36 (Update workflows to revert PDM changes and respect new src layout)
         with:
-<<<<<<< HEAD
             cache: true
       - name: Install dependencies
         run: pip install -r pulumi/requirements.txt
@@ -41,23 +18,6 @@ jobs:
         run: ruff check
       - name: type check
         run: mypy . --ignore-missing-imports
-||||||| parent of cc89c36 (Update workflows to revert PDM changes and respect new src layout)
-          cache: true
-      - name: Install dependencies
-        run: |
-          echo "installing project dependencies"
-          pdm install
-      - name: lint
-        run: |
-          source .venv/bin/activate
-          ruff check
-      - name: type check
-        run: |
-          source .venv/bin/activate
-          mypy . --ignore-missing-imports
-=======
-          cache: pip
->>>>>>> cc89c36 (Update workflows to revert PDM changes and respect new src layout)
 
       - name: Install dependencies 📦️
         run: |
