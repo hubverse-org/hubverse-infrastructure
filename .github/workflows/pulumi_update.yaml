@@ -14,20 +14,21 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./pulumi
+        working-directory: ./src/hubverse_infrastructure
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Setup Python 🐍
+      - name: Set up Python 🐍
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
-          cache: 'pip'
+          cache: pip
 
-      - name: Installing dependencies 📦️
-        run: pip install -r requirements.txt
-      
+      - name: Install dependencies 📦️
+        run: |
+          pip install -r requirements/requirements.txt -e .
+          pip install -r requirements/dev-requirements.txt
+
       - name: Configure AWS credentials 🔐
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -38,7 +39,6 @@ jobs:
         uses: pulumi/actions@v5
         with:
           command: up
-          work-dir: ./pulumi
           stack-name: bsweger/hubverse-aws/hubverse
           comment-on-pr: true
         env:
