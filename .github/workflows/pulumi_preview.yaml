@@ -18,7 +18,21 @@ jobs:
         working-directory: ./src/hubverse_infrastructure
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+
+      # - name: Setup Python 🐍
+      #   uses: actions/setup-python@v5
+      #   with:
+      #     # No cache directive here b/c actions/setup-python doesn't
+      #     # support PDM caching. There's a PDM setup action does
+      #     # support dependency caching, but the way it handles
+      #     # environments doesn't play nicely with the Pulumi action
+      #     architecture: 'x64'
+
+      # - name: Install PDM
+      #   run: brew install pdm
+
+      # - name: Install dependencies 📦️
 
       - name: Set up PDM 🐍
         id: setup_pdm
@@ -28,16 +42,34 @@ jobs:
         uses: pdm-project/setup-pdm@v4
         with:
           cache: true
+
       - name: Install dependencies 📦️
         run: |
           echo "installing project dependencies"
+          python -m venv .venv
+          source .venv/bin/activate
           pdm install
+          echo "$PATH"
+          echo PATH=$PATH >> $GITHUB_ENV
 
       - name: Configure AWS credentials 🔐
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::767397675902:role/hubverse-administration
           aws-region: us-east-1
+
+      # - name: Debug 🐛
+      #   run: |
+      #     echo ${{ steps.setup_pdm.outputs.python-path }}
+      #     echo ${{ steps.setup_pdm.outputs.pdm-bin }}
+      #     pip list
+      #     pdm list
+      #     pdm venv list
+      #     echo "$PATH"
+      #     echo "$PYTHONPATH"
+      #     which python
+        # env:
+        #   PYTHONPATH: .venv/bin
 
       - name: Previewing infrastructure 👀
         uses: pulumi/actions@v5
@@ -47,4 +79,3 @@ jobs:
           comment-on-pr: true
         env:
           PULUMI_ACCESS_TOKEN: ${{ secrets.BSWEGER_PULUMI_DEMO }}
-          PYTHONPATH: ${{ steps.setup_pdm.outputs.python-path }}

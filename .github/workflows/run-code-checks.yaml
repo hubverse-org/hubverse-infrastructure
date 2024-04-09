@@ -1,5 +1,4 @@
 name: run-code-checks
-run-name: ${{ github.action }} triggered by ${{ github.event_name }} from ${{ github.actor }}
 
 on:
   push:

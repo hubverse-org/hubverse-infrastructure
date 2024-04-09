@@ -17,7 +17,7 @@ jobs:
         working-directory: ./src/hubverse_infrastructure
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up PDM 🐍
         id: setup_pdm
@@ -47,4 +47,4 @@ jobs:
           comment-on-pr: true
         env:
           PULUMI_ACCESS_TOKEN: ${{ secrets.BSWEGER_PULUMI_DEMO }}
-          PYTHONPATH: ${{ steps.setup_pdm.outputs.python-path }}
+          PYTHONPATH: ./.venv/bin
