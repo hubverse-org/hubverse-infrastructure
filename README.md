@@ -44,6 +44,43 @@ TODO: Add detailed instructions for onboarding a hub to the cloud.
 
 The code here uses a simple .yaml file that lists the cloud-enabled hubs. For each hub on the list, the Pulumi entry point invokes a Python function that provisions the required AWS resources.
 
-If you're a Hubverse developer running Pulumi locally, you will need to setup the projectm and you will need the required Hubverse AWS credentials.
+If you're a Hubverse developer running Pulumi locally, you will need to setup the project, and you will need the required Hubverse AWS credentials.
 
-TODO: Add detailed project setup instructions.
+### Setup instructions
+
+1. Clone this repository and navigate to the project directory
+
+2. Create virtual environment and install dependencies
+```bash
+conda env create -f environment.yml
+```
+3. Activate the virtual environment
+```bash
+conda activate hubverse-infrastructure
+```
+
+### To add dependencies
+
+This project uses `pip-tools` to generate requirements files from `pyproject.toml`. Managing dependencies
+this way requires a few more steps than using a tool like PDM, but requirements.txt work better
+with Pulumi than tooling-specific lockfiles from utilities like PDM.
+
+To add a new dependency:
+
+1. Add dependency to the `dependencies` section `pyproject.toml` (if it's a dev dependency,
+add it to the `dev` section of `[project.optional-dependencies]`).
+
+2. Regenerate the `requirements.txt` file:
+```bash
+python -m piptools compile -o requirements/requirements.txt pyproject.toml
+```
+
+3. If you've added a dev dependency, regenerate the `requirements-dev.txt` file:
+```bash
+python -m piptools compile --extra dev -o requirements/dev-requirements.txt pyproject.toml
+```
+
+4. Update the current environment:
+```bash
+conda env update -f environment.yml
+```
