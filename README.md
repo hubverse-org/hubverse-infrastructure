@@ -1,21 +1,23 @@
 # Hubverse Infrastructure
 
-This repository contains the code needed to provision cloud resources for Hubverse hubs that would like
-to store their data in the cloud.
+This repository belongs to the Hubverse, a project that provides open tools for collaborative modeling:
+https://hubdocs.readthedocs.io/en/latest/.
 
-## Hubverse Cloud Integration
+## Background
+
+### Hubverse Cloud Integration
 
 At this time, the Hubverse will provide hosting for hubs that opt-in to cloud storage. This may change in the future, but as the Hubverse Cloud work gets started, we want to minimize onboarding friction for hub administrators.
 
 This repository contains the [Pulumi](https://www.pulumi.com/) project that provisions the AWS resources for each cloud-enabled hub hosted on the Hubverse AWS account.
 
 
-## Supported Cloud Providers
+### Supported Cloud Providers
 
 At this time, the Hubverse supports Amazon Web Services (AWS) as a cloud provider.
 
 
-### AWS
+#### AWS
 
 Each cloud-enabled hub requires the following AWS resources:
 
@@ -59,7 +61,7 @@ conda env create -f environment.yml
 conda activate hubverse-infrastructure
 ```
 
-### To add dependencies
+### Adding dependencies
 
 This project uses `pip-tools` to generate requirements files from `pyproject.toml`. Managing dependencies
 this way requires a few more steps than using a tool like PDM, but requirements.txt work better
