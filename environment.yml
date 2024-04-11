@@ -1,0 +1,12 @@
+name: hubverse-infrastructure
+dependencies:
+  # python version below should match .python-version
+  - python == 3.11.8
+  - pip
+  - pip:
+    # we're using pip-tools to create "locked" requirements files,
+    # so install pip-tools and then install everything else from requirements
+    # files that it generates
+    - pip-tools
+    - -r requirements/requirements.txt -e .
+    - -r requirements/dev-requirements.txt
