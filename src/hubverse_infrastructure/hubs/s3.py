@@ -2,14 +2,13 @@ import pulumi_aws as aws
 from pulumi import ResourceOptions  # type: ignore
 
 
-
 def create_bucket(hub_name: str) -> aws.s3.Bucket:
     """
     Create a new S3 bucket for a hub.
     (for simplicity, in this demo we're setting the bucket name to the hub name)
     """
 
-    hub_bucket = aws.s3.Bucket(hub_name, bucket=hub_name, tags={"hub": hub_name})
+    hub_bucket = aws.s3.Bucket(hub_name, bucket=hub_name, tags={'hub': hub_name})
 
     return hub_bucket
 
@@ -25,7 +24,7 @@ def make_bucket_public(bucket: aws.s3.Bucket, bucket_name: str):
     # By default, new S3 buckets do not allow public access. Updating
     # those settings will allow us to create a bucket policy for public access.
     hub_bucket_public_access_block = aws.s3.BucketPublicAccessBlock(
-        resource_name=f"{bucket_name}-public-access-block",
+        resource_name=f'{bucket_name}-public-access-block',
         bucket=bucket.id,
         block_public_acls=True,
         ignore_public_acls=True,
@@ -37,35 +36,27 @@ def make_bucket_public(bucket: aws.s3.Bucket, bucket_name: str):
     s3_policy = aws.iam.get_policy_document(
         statements=[
             aws.iam.GetPolicyDocumentStatementArgs(
-                sid="PublicReadGetObject",
+                sid='PublicReadGetObject',
                 actions=[
-                    "s3:GetObject",
+                    's3:GetObject',
                 ],
-                principals=[
-                    aws.iam.GetPolicyDocumentStatementPrincipalArgs(
-                        type="*", identifiers=["*"]
-                    )
-                ],
-                resources=[f"arn:aws:s3:::{bucket_name}/*"],
+                principals=[aws.iam.GetPolicyDocumentStatementPrincipalArgs(type='*', identifiers=['*'])],
+                resources=[f'arn:aws:s3:::{bucket_name}/*'],
             ),
             aws.iam.GetPolicyDocumentStatementArgs(
-                sid="PublicListBucket",
+                sid='PublicListBucket',
                 actions=[
-                    "s3:ListBucket",
+                    's3:ListBucket',
                 ],
-                principals=[
-                    aws.iam.GetPolicyDocumentStatementPrincipalArgs(
-                        type="*", identifiers=["*"]
-                    )
-                ],
-                resources=[f"arn:aws:s3:::{bucket_name}"],
+                principals=[aws.iam.GetPolicyDocumentStatementPrincipalArgs(type='*', identifiers=['*'])],
+                resources=[f'arn:aws:s3:::{bucket_name}'],
             ),
         ]
     )
 
     # Apply the public read policy to the bucket.
     aws.s3.BucketPolicy(
-        resource_name=f"{bucket_name}-read-bucket-policy",
+        resource_name=f'{bucket_name}-read-bucket-policy',
         bucket=bucket.id,
         policy=s3_policy.json,
         # The dependency below ensures that the bucket's public access block has
@@ -76,7 +67,7 @@ def make_bucket_public(bucket: aws.s3.Bucket, bucket_name: str):
 
 
 def create_s3_infrastructure(hub_info: dict) -> aws.s3.Bucket:
-    hub_name = hub_info["hub"]
+    hub_name = hub_info['hub']
     bucket = create_bucket(hub_name)
     make_bucket_public(bucket, hub_name)
     return bucket

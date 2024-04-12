@@ -1,7 +1,7 @@
 """Code needed to provision AWS resources for a new hub."""
 
-from hubverse_infrastructure.hubs.s3 import create_s3_infrastructure
 from hubverse_infrastructure.hubs.iam import create_iam_infrastructure
+from hubverse_infrastructure.hubs.s3 import create_s3_infrastructure
 
 
 def set_up_hub(hub_info: dict):
