@@ -25,8 +25,6 @@ def make_bucket_public(bucket: aws.s3.Bucket, bucket_name: str):
     # By default, new S3 buckets do not allow public access. Updating
     # those settings will allow us to create a bucket policy for public access.
     hub_bucket_public_access_block = aws.s3.BucketPublicAccessBlock(
-        # resource_name=f'{bucket_name}-read-bucket-policy',
-        # resource_name=bucket.bucket.apply(lambda bucket: f'{bucket}-public-access-block'),
         resource_name=f"{bucket_name}-public-access-block",
         bucket=bucket.id,
         block_public_acls=True,
@@ -67,8 +65,6 @@ def make_bucket_public(bucket: aws.s3.Bucket, bucket_name: str):
 
     # Apply the public read policy to the bucket.
     aws.s3.BucketPolicy(
-        # resource_name=f'{bucket_name}-read-bucket-policy',
-        # resource_name=Output.concat(bucket.id, '-read-bucket-policy'),
         resource_name=f"{bucket_name}-read-bucket-policy",
         bucket=bucket.id,
         policy=s3_policy.json,
