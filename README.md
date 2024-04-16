@@ -1,6 +1,9 @@
 # Hubverse Infrastructure
 
-This repository belongs to the Hubverse, a project that provides open tools for collaborative modeling:
+
+<img src="https://www.pulumi.com/images/pricing/team-oss.svg" alt="Pulumi Team edition for open source" style="width:100px; float: left; margin-right: 10px;"/>
+
+This repository uses [Pulumi](https://www.pulumi.com/) to provision cloud resources for the Hubverse, a project that provides open tools for collaborative modeling:
 https://hubdocs.readthedocs.io/en/latest/.
 
 ## Background
@@ -26,15 +29,6 @@ Each cloud-enabled hub requires the following AWS resources:
     - A _trust policy_ that stipulates the role can only be used by GitHub Actions that originate from the main branch of the hub's repository.
     - A _permission policy_ that grants write access to the hub's S3 bucket.
 
-This repository contains two Pulumi-related GitHub workflows create and destroy the above AWS resources as needed:
-
-* `pulumi_preview.yml`: runs when a pull request is opened and reports any related AWS resource changes
-* `pulumi_update.yml`: runs when a pull request is merged and applies the AWS changes
-
-The GitHub actions use an OIDC identity provider to authenticate with AWS.
-
-![Github and OIDC](https://docs.github.com/assets/cb-63262/mw-1440/images/help/actions/oidc-architecture.webp)
-
 
 ## Onboarding a Hub
 
@@ -46,7 +40,16 @@ TODO: Add detailed instructions for onboarding a hub to the cloud.
 
 The code here uses a simple .yaml file that lists the cloud-enabled hubs. For each hub on the list, the Pulumi entry point invokes a Python function that provisions the required AWS resources.
 
-If you're a Hubverse developer running Pulumi locally, you will need to setup the project, and you will need the required Hubverse AWS credentials.
+### Required permissions
+
+This repo uses two GitHub workflows to manage Hubverse AWS resources:
+
+1. `pulumi_preview.yaml`: runs when a PR is opened and generates a report of infrastructure updates that would result from the proposed code changes
+2. `pulumi_update.yaml`: runs when a PR is merged to the default branch and updates AWS resources as outlined in the preview
+
+Both workflows use a GitHub OIDC identity provider to assume an IAM role called `hubverse-administration`. This role grants the necessary permissions needed to create, manage, and destroy Hubverse AWS resources.
+
+If you're a Hubverse developer who wants to use Pulumi locally (using [Pulumi's CLI](https://www.pulumi.com/docs/cli/), for example), you will need access to an AWS role with the same permissions used by the GitHub workflows.
 
 ### Setup instructions
 
