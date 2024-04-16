@@ -7,8 +7,8 @@ from hubverse_infrastructure.hubs.hub_setup import set_up_hub
 
 def get_hubs() -> list[dict]:
     """Get the list of cloud-enabled hubs."""
-    with open('hubs/hubs.yaml', 'r') as file:
-        hubs = yaml.safe_load(file).get('hubs')
+    with open("hubs/hubs.yaml", "r") as file:
+        hubs = yaml.safe_load(file).get("hubs")
     return hubs
 
 
