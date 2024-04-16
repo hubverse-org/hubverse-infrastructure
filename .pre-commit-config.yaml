@@ -10,11 +10,15 @@ repos:
 - repo: https://github.com/astral-sh/ruff-pre-commit
   rev: v0.1.11
   hooks:
-    # Run the linter.
-    - id: ruff
-      args: [ --fix ]
-    # Run the formatter.
-    - id: ruff-format
+  # Run the linter.
+  - id: ruff
+    args: [ --fix ]
+  # Run the formatter.
+  - id: ruff-format
+- repo: https://github.com/codespell-project/codespell
+  rev: v2.2.4
+  hooks:
+  - id: codespell
 - repo: https://github.com/pre-commit/mirrors-mypy
   rev: 'v1.8.0'
   hooks:
