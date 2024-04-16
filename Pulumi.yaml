@@ -2,7 +2,7 @@ name: hubverse-aws
 runtime:
   name: python
 description: Hubverse infrastructure for AWS
-main: src/hubverse_infrastructure/__main__.py
+main: src/hubverse_infrastructure/main.py
 config:
   pulumi:tags:
     value:

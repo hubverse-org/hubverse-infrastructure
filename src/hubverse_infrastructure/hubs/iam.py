@@ -5,9 +5,7 @@ def create_trust_policy(org: str, repo: str):
     """Create the trust policy that will used with the IAM role for Github Actions."""
 
     # retrieve information about the hubverse account's OIDC github provider
-    oidc_github = aws.iam.get_open_id_connect_provider(
-        url="https://token.actions.githubusercontent.com"
-    )
+    oidc_github = aws.iam.get_open_id_connect_provider(url="https://token.actions.githubusercontent.com")
 
     # Create the policy that defines who will be allowed to assume
     # a role using the OIDC provider we create for GitHub Actions.
@@ -100,9 +98,7 @@ def attach_bucket_write_policy(hub_name: str, github_role, bucket_write_policy):
 
     # Update the role we created for Github Actions by attaching the
     # policy that allows writes to the hub's S3 bucket
-    aws.iam.RolePolicyAttachment(
-        resource_name=hub_name, role=github_role.name, policy_arn=bucket_write_policy.id
-    )
+    aws.iam.RolePolicyAttachment(resource_name=hub_name, role=github_role.name, policy_arn=bucket_write_policy.id)
 
 
 def create_iam_infrastructure(hub_info: dict):

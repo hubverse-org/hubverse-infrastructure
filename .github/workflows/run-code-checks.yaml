@@ -30,3 +30,6 @@ jobs:
 
       - name: type check 📝
         run: mypy . --ignore-missing-imports
+
+      - name: run tests 🧪
+        run: pytest
