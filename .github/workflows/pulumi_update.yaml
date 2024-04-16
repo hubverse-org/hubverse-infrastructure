@@ -29,7 +29,7 @@ jobs:
       - name: Configure AWS credentials 🔐
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::767397675902:role/hubverse-administration
+          role-to-assume: arn:aws:iam::767397675902:role/hubverse-infrastructure-write-role
           aws-region: us-east-1
 
       - name: Updating infrastructure 🛠️
