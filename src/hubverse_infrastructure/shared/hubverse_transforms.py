@@ -51,8 +51,54 @@ def create_bucket(bucket_name: str) -> aws.s3.Bucket:
     return hubverse_asset_bucket
 
 
+def create_transform_lambda(lambda_name: str, lambda_bucket_name: str) -> aws.lambda_.Function:
+    """
+    Create the scaffolding for the Lambda function that transforms a model-output file.
+    """
+
+    lambda_role_document = aws.iam.get_policy_document(
+        statements=[
+            aws.iam.GetPolicyDocumentStatementArgs(
+                effect="Allow",
+                principals=[
+                    aws.iam.GetPolicyDocumentStatementPrincipalArgs(
+                        type="Service",
+                        identifiers=["lambda.amazonaws.com"],
+                    )
+                ],
+                actions=["sts:AssumeRole"],
+            )
+        ]
+    )
+
+    lambda_role = aws.iam.Role(
+        name=f"{lambda_name}-role",
+        resource_name=f"{lambda_name}-role",
+        description="The role assumed by the Lambda that runs the hubverse-transform function",
+        assume_role_policy=lambda_role_document.json,
+        tags={"hub": "hubverse"},
+    )
+
+    transform_lambda = aws.lambda_.Function(
+        name=lambda_name,
+        resource_name=lambda_name,
+        description="Runs data transforms on Hubverse model-output files",
+        role=lambda_role.arn,
+        handler="lambda_function.lambda_handler",
+        package_type="Zip",
+        runtime="python3.12",
+        s3_bucket=lambda_bucket_name,
+        s3_key="lambda/hubverse-transform.zip",
+        tags={"hub": "hubverse"},
+        timeout=210,
+    )
+
+    return transform_lambda
+
+
 def create_transform_infrastructure():
     bucket_name = "hubverse-assets"
-    hubverse_bucket = create_bucket(bucket_name)
+    lambda_name = "hubverse-transform-model-output"
 
-    return hubverse_bucket
+    create_bucket(bucket_name)
+    create_transform_lambda(lambda_name, bucket_name)
