@@ -1,5 +1,6 @@
 """Create the AWS infrastructure needed to run Hubverse model-output transformations as Lambda functions."""
 import pulumi_aws as aws
+from cloudpathlib import CloudPath
 from pulumi import ResourceOptions  # type: ignore
 
 
@@ -51,7 +52,7 @@ def create_bucket(bucket_name: str) -> aws.s3.Bucket:
     return hubverse_asset_bucket
 
 
-def create_transform_lambda(lambda_name: str, lambda_bucket_name: str) -> aws.lambda_.Function:
+def create_transform_lambda(lambda_name: str, package_location: CloudPath) -> aws.lambda_.Function:
     """
     Create the scaffolding for the Lambda function that transforms a model-output file.
     """
@@ -79,6 +80,9 @@ def create_transform_lambda(lambda_name: str, lambda_bucket_name: str) -> aws.la
         tags={"hub": "hubverse"},
     )
 
+    s3_bucket = package_location.drive
+    s3_key = package_location.key
+
     transform_lambda = aws.lambda_.Function(
         name=lambda_name,
         resource_name=lambda_name,
@@ -87,8 +91,8 @@ def create_transform_lambda(lambda_name: str, lambda_bucket_name: str) -> aws.la
         handler="lambda_function.lambda_handler",
         package_type="Zip",
         runtime="python3.12",
-        s3_bucket=lambda_bucket_name,
-        s3_key="lambda/hubverse-transform.zip",
+        s3_bucket=s3_bucket,
+        s3_key=s3_key,
         tags={"hub": "hubverse"},
         timeout=210,
     )
@@ -99,6 +103,9 @@ def create_transform_lambda(lambda_name: str, lambda_bucket_name: str) -> aws.la
 def create_transform_infrastructure():
     bucket_name = "hubverse-assets"
     lambda_name = "hubverse-transform-model-output"
+    lambda_package_location = "s3://hubverse-assets/lambda/hubverse-transform.zip"
+
+    lambda_package_path = CloudPath(lambda_package_location)
 
     create_bucket(bucket_name)
-    create_transform_lambda(lambda_name, bucket_name)
+    create_transform_lambda(lambda_name, package_location=lambda_package_path)
