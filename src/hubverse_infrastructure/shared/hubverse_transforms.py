@@ -85,7 +85,13 @@ def create_cloudwatch_write_policy(policy_name: str):
 def create_lambda_execution_permissions(lambda_name: str) -> aws.iam.Role:
     """Create IAM role that the hubverse-transform lambda will assume and attach the necessary permissions."""
 
-    # Create the role used by the lambda function
+    # Because getting ARNs from Pulumi resources is terrible, the code below manually constructs the ARN
+    # of the hubverse-transform lambda function. To do that, we need the current AWS account id and its
+    # default region.
+    aws_account = aws.get_caller_identity().account_id
+    aws_region = aws.get_region().name
+
+    # Create the role used by the lambda function, and limit its use to hubverse-transform lambda function
     lambda_role_document = aws.iam.get_policy_document(
         statements=[
             aws.iam.GetPolicyDocumentStatementArgs(
@@ -97,6 +103,13 @@ def create_lambda_execution_permissions(lambda_name: str) -> aws.iam.Role:
                     )
                 ],
                 actions=["sts:AssumeRole"],
+                conditions=[
+                    aws.iam.GetPolicyDocumentStatementConditionArgs(
+                        test="StringEquals",
+                        variable="aws:SourceArn",
+                        values=[f"arn:aws:lambda:{aws_region}:{aws_account}:function:{lambda_name}"],
+                    ),
+                ],
             )
         ]
     )
