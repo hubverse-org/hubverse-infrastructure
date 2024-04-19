@@ -210,7 +210,7 @@ def create_lambda_package_placeholder(s3_bucket: str, s3_key: str):
         raise Exception(f"Error when checking for existing lambda package: {s3_bucket}/{s3_key}") from e
 
 
-def create_transform_infrastructure() -> aws.iam.Role:
+def create_transform_infrastructure() -> tuple[aws.lambda_.Function, aws.iam.Role]:
     """
     Create all AWS infrastructure required to support the lambda function that will
     operate on cloud-based model-output files.
@@ -222,7 +222,7 @@ def create_transform_infrastructure() -> aws.iam.Role:
 
     bucket = create_bucket(bucket_name)
     model_output_lambda_role = create_lambda_execution_permissions(lambda_name)
-    create_transform_lambda(lambda_name, lambda_package_path, model_output_lambda_role, bucket)
+    model_output_lambda = create_transform_lambda(lambda_name, lambda_package_path, model_output_lambda_role, bucket)
 
     # return the lambda's role so we can attach hub-specific policies to it
-    return model_output_lambda_role
+    return model_output_lambda, model_output_lambda_role
