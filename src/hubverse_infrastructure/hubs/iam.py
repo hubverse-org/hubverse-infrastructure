@@ -93,12 +93,12 @@ def create_bucket_write_policy(hub_name: str):
     return bucket_write_policy
 
 
-def attach_bucket_write_policy(hub_name: str, github_role, bucket_write_policy):
+def attach_bucket_write_policy(resource_name: str, role: aws.iam.Role, bucket_write_policy: aws.iam.Policy):
     """Attach the S3 write policy to the role that Github Actions assumes."""
 
     # Update the role we created for Github Actions by attaching the
     # policy that allows writes to the hub's S3 bucket
-    aws.iam.RolePolicyAttachment(resource_name=hub_name, role=github_role.name, policy_arn=bucket_write_policy.id)
+    aws.iam.RolePolicyAttachment(resource_name=resource_name, role=role.name, policy_arn=bucket_write_policy.id)
 
 
 def create_iam_infrastructure(hub_info: dict):
@@ -106,7 +106,10 @@ def create_iam_infrastructure(hub_info: dict):
     org = hub_info["org"]
     repo = hub_info["repo"]
     hub = hub_info["hub"]
+    model_output_lambda_role = hub_info["model_output_lambda_role"]
+
     trust_policy = create_trust_policy(org, repo)
     github_role = create_github_role(hub, trust_policy)
     s3_write_policy = create_bucket_write_policy(hub)
     attach_bucket_write_policy(hub, github_role, s3_write_policy)
+    attach_bucket_write_policy(f"{hub}-transform-model-output-lambda", model_output_lambda_role, s3_write_policy)
