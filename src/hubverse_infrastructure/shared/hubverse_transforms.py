@@ -61,9 +61,12 @@ def create_bucket(bucket_name: str) -> aws.s3.BucketV2:
     return hubverse_asset_bucket
 
 
-def create_cloudwatch_write_policy(policy_name: str):
-    # Create a policy that allows write access to AWS CloudWatch logs
-    # (we'll need to attach this to the Lambda execution role)
+def create_cloudwatch_write_policy(policy_name: str) -> aws.iam.Policy:
+    """
+    Create a policy that allows write access to AWS CloudWatch logs
+    (we'll need to attach this to the Lambda execution role)
+    """
+
     cloudwatch_write_policy_document = aws.iam.get_policy_document(
         statements=[
             aws.iam.GetPolicyDocumentStatementArgs(
@@ -90,7 +93,9 @@ def create_cloudwatch_write_policy(policy_name: str):
 
 
 def create_lambda_execution_permissions(lambda_name: str) -> aws.iam.Role:
-    """Create IAM role that the hubverse-transform lambda will assume and attach the necessary permissions."""
+    """
+    Create IAM role that the hubverse-transform lambda will assume and attach the necessary permissions.
+    """
 
     # Because getting ARNs from Pulumi resources is terrible, the code below manually constructs the ARN
     # of the hubverse-transform lambda function. To do that, we need the current AWS account id and its
@@ -172,13 +177,15 @@ def create_transform_lambda(
 
 
 def create_lambda_package_placeholder(s3_bucket: str, s3_key: str):
-    """Create a lambda package placeholder in S3 if necessary."""
+    """
+    Create a lambda package placeholder in S3 if necessary.
+    """
 
     # if we're in a dry run (such as a Pulumi preview), skip this
     if pulumi.runtime.is_dry_run():
         return
 
-    # This function creates a "scaffolding" lambda, which is designed to run packaged function code
+    # This module creates a "scaffolding" lambda, which is designed to run packaged function code
     # stored in an S3 bucket. We don't want Pulumi to manage the lambda's actual code because
     # we don't want the hubverse transform functionality tightly coupled to the Hubverse-managed
     # AWS infrastructure. However, if the code package (which is deployed by the hubverse-transform
@@ -202,14 +209,15 @@ def create_lambda_package_placeholder(s3_bucket: str, s3_key: str):
     except Exception as e:
         raise Exception(f"Error when checking for existing lambda package: {s3_bucket}/{s3_key}") from e
 
-    return lambda_package
-
 
 def create_transform_infrastructure():
+    """
+    Create all AWS infrastructure required to support the lambda function that will
+    operate on cloud-based model-output files.
+    """
     bucket_name = "hubverse-assets"
     lambda_name = "hubverse-transform-model-output"
     lambda_package_location = "s3://hubverse-assets/lambda/hubverse-transform-model-output.zip"
-
     lambda_package_path = CloudPath(lambda_package_location)
 
     bucket = create_bucket(bucket_name)
