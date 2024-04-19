@@ -151,7 +151,7 @@ def create_transform_lambda(
     """
 
     s3_bucket = package_location.drive
-    s3_key = package_location.key
+    s3_key = package_location.key  # type: ignore
 
     # Using arn.apply below ensures that the create_lambda_package_placeholder doesn't run
     # until the hubverse_asset_bucket exists (because a bucket's arn isn't available until
