@@ -2,9 +2,6 @@
 # adopt Pulumi, the next step would be reading this information from each hub's admin.json config.
 # hub = admin.json: cloud.storage
 hubs:
-- hub: hubverse-infrastructure-test
-  org: Infectious-Disease-Modeling-Hubs
-  repo: hubverse-infrastructure
 - hub: hubverse-cloud
   org: Infectious-Disease-Modeling-Hubs
   repo: hubverse-cloud

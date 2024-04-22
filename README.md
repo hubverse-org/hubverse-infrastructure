@@ -15,14 +15,24 @@ At this time, the Hubverse will provide hosting for hubs that opt-in to cloud st
 This repository contains the [Pulumi](https://www.pulumi.com/) project that provisions the AWS resources for each cloud-enabled hub hosted on the Hubverse AWS account.
 
 
-### Supported Cloud Providers
+### AWS
 
-At this time, the Hubverse supports Amazon Web Services (AWS) as a cloud provider.
+At this time, Amazon Web Services (AWS) is the only cloud provider supported by Hubverse hosting.
 
+The code in this repository creates two categories of AWS resources:
+1. Resources that are shared across all hubs or are used for Hubverse administration.
+2. Resources created specifically for each hub.
 
-#### AWS
+#### Shared cloud resources
 
-Each cloud-enabled hub requires the following AWS resources:
+These resources are created one time for the entire Hubverse:
+
+1. As S3 bucket to store shared files. The contents are not publicly accessible because they are for internal use.
+2. An AWS lambda function that transforms model-output files into a standardized format.
+
+#### Hub-specific cloud resources
+
+Each cloud-enabled hub requires several dedicated AWS resources. These resources are created for each hub:
 
 1. An S3 bucket to store data (with public read access).
 2. An IAM _role_ that can be assumed by GitHub Actions. This role has two associated _policies_:
