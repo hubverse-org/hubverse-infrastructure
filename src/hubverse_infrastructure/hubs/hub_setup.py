@@ -12,5 +12,6 @@ def set_up_hub(hub_info: dict):
     a different bucket name.
     """
 
-    create_s3_infrastructure(hub_info)
+    hub_bucket = create_s3_infrastructure(hub_info)
+    hub_info["hub_bucket"] = hub_bucket
     create_iam_infrastructure(hub_info)

@@ -1,3 +1,4 @@
+import pulumi
 import pulumi_aws as aws
 
 
@@ -93,12 +94,41 @@ def create_bucket_write_policy(hub_name: str):
     return bucket_write_policy
 
 
-def attach_bucket_write_policy(hub_name: str, github_role, bucket_write_policy):
+def attach_bucket_write_policy(resource_name: str, role: aws.iam.Role, bucket_write_policy: aws.iam.Policy):
     """Attach the S3 write policy to the role that Github Actions assumes."""
 
     # Update the role we created for Github Actions by attaching the
     # policy that allows writes to the hub's S3 bucket
-    aws.iam.RolePolicyAttachment(resource_name=hub_name, role=github_role.name, policy_arn=bucket_write_policy.id)
+    aws.iam.RolePolicyAttachment(resource_name=resource_name, role=role.name, policy_arn=bucket_write_policy.id)
+
+
+def create_model_output_lambda_trigger(
+    hub_name: str, hub_bucket: aws.s3.Bucket, model_output_lambda: aws.lambda_.Function
+) -> aws.s3.BucketNotification:
+    """Create the trigger that will invoke the model output lambda when a new file is written to the hub's S3 bucket."""
+    allow_bucket = aws.lambda_.Permission(
+        resource_name=f"{hub_name}-allow",
+        statement_id="AllowExecutionFromS3Bucket",
+        action="lambda:InvokeFunction",
+        function=model_output_lambda.arn.apply(lambda arn: f"{arn}"),
+        principal="s3.amazonaws.com",
+        source_arn=hub_bucket.arn.apply(lambda arn: f"{arn}"),
+    )
+
+    bucket_notification = aws.s3.BucketNotification(
+        resource_name=f"{hub_name}-create-notification",
+        bucket=hub_bucket.id,
+        lambda_functions=[
+            aws.s3.BucketNotificationLambdaFunctionArgs(
+                lambda_function_arn=model_output_lambda.arn.apply(lambda arn: f"{arn}"),
+                events=["s3:ObjectCreated:*"],
+                filter_prefix="raw/",
+            )
+        ],
+        opts=pulumi.ResourceOptions(depends_on=[allow_bucket]),
+    )
+
+    return bucket_notification
 
 
 def create_iam_infrastructure(hub_info: dict):
@@ -106,7 +136,13 @@ def create_iam_infrastructure(hub_info: dict):
     org = hub_info["org"]
     repo = hub_info["repo"]
     hub = hub_info["hub"]
+    hub_bucket = hub_info["hub_bucket"]
+    model_output_lambda = hub_info["model_output_lambda"]
+    model_output_lambda_role = hub_info["model_output_lambda_role"]
+
     trust_policy = create_trust_policy(org, repo)
     github_role = create_github_role(hub, trust_policy)
     s3_write_policy = create_bucket_write_policy(hub)
     attach_bucket_write_policy(hub, github_role, s3_write_policy)
+    attach_bucket_write_policy(f"{hub}-transform-model-output-lambda", model_output_lambda_role, s3_write_policy)
+    create_model_output_lambda_trigger(hub, hub_bucket, model_output_lambda)

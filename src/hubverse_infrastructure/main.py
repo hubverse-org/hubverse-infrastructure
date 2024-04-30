@@ -6,7 +6,7 @@ from hubverse_infrastructure.hubs.hub_setup import set_up_hub
 from hubverse_infrastructure.shared.hubverse_transforms import create_transform_infrastructure
 
 # First, create infrastructure components that are shared across hubs.
-create_transform_infrastructure()
+model_output_lambda, model_output_lambda_role = create_transform_infrastructure()
 
 
 # Then, create hub-specific infrastructure.
@@ -19,4 +19,6 @@ def get_hubs() -> list[dict]:
 
 hub_list = get_hubs()
 for hub in hub_list:
+    hub["model_output_lambda"] = model_output_lambda
+    hub["model_output_lambda_role"] = model_output_lambda_role
     set_up_hub(hub)
