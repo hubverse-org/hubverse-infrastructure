@@ -218,7 +218,7 @@ def create_transform_infrastructure() -> tuple[aws.lambda_.Function, aws.iam.Rol
     bucket_name = "hubverse-assets"
     lambda_name = "hubverse-transform-model-output"
     lambda_package_location = "s3://hubverse-assets/lambda/hubverse-transform-model-output.zip"
-    lambda_package_path = CloudPath(lambda_package_location)
+    lambda_package_path = CloudPath(lambda_package_location)  # type: ignore
 
     bucket = create_bucket(bucket_name)
     model_output_lambda_role = create_lambda_execution_permissions(lambda_name)
