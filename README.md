@@ -64,39 +64,47 @@ If you're a Hubverse developer who wants to use Pulumi locally (using [Pulumi's 
 
 ### Setup instructions
 
-1. Clone this repository and navigate to the project directory
+1. Make sure you have the required version on Python installed on your machine (see [`.python-version`](.python-version)).
 
-2. Create virtual environment and install dependencies
-```bash
-conda env create -f environment.yml
-```
-3. Activate the virtual environment
-```bash
-conda activate hubverse-infrastructure
-```
+    **note:** [pyenv](https://github.com/pyenv/pyenv) is a good tool for managing multiple version of Python on a single machine.
+
+2. Clone this repository and navigate to the project directory.
+
+3. Make sure your machine's current Python interpreter is set to the project's required version of Python, and then create a virtual environment. You can use any third-paty tool that manages Python environments (e.g., pipenv, poetry), or you can use Python's built-in `venv` module (make sure you're at the top of the project directory):
+    ```bash
+    python -m venv .venv
+    ```
+
+4. Activate the virtual environment. If you created the environment using the `venv` command above, you can activate it as follows:
+    ```bash
+    source .venv/bin/activate
+    ```
+
+5. Install the project's dependencies:
+    ```bash
+    pip install -r requirements/dev-requirements.txt && pip install -e .
+    ```
+
 
 ### Adding dependencies
 
-This project uses `pip-tools` to generate requirements files from `pyproject.toml`. Managing dependencies
-this way requires a few more steps than using a tool like PDM, but requirements.txt work better
-with Pulumi than tooling-specific lockfiles from utilities like PDM.
+This project uses `pip-tools` to generate requirements files from `pyproject.toml`.  To add new dependencies, you will need to install [`pip-tools`](https://pip-tools.readthedocs.io/en/latest/) into your virtual environment (or use [`pipx`](https://github.com/pypa/pipx) to make it available on your machine globally).
 
 To add a new dependency:
 
-1. Add dependency to the `dependencies` section `pyproject.toml` (if it's a dev dependency,
-add it to the `dev` section of `[project.optional-dependencies]`).
+1. Add dependency to the `dependencies` section `pyproject.toml` (if it's a dev dependency, add it to the `dev` section of `[project.optional-dependencies]`).
 
-2. Regenerate the `requirements.txt` file:
-```bash
-python -m piptools compile -o requirements/requirements.txt pyproject.toml
-```
+2. Regenerate the `requirements.txt` file (you can skip this if you've only added a dev dependency):
+    ```bash
+    pip-compile --output-file=requirements/requirements.txt pyproject.toml
+    ```
 
-3. If you've added a dev dependency, regenerate the `requirements-dev.txt` file:
-```bash
-python -m piptools compile --extra dev -o requirements/dev-requirements.txt pyproject.toml
-```
+3. Regenerate the `requirements-dev.txt` file (you will need to do this every time, even if you haven't added a dev dependency):
+    ```bash
+    pip-compile --extra=dev --output-file=requirements/dev-requirements.txt pyproject.toml
+    ```
 
-4. Update the current environment:
-```bash
-conda env update -f environment.yml
-```
+4. Install the updated dependencies into your virtual environment:
+    ```bash
+    pip install -r requirements/dev-requirements.txt
+    ```
