@@ -70,7 +70,7 @@ If you're a Hubverse developer who wants to use Pulumi locally (using [Pulumi's 
 
 2. Clone this repository and navigate to the project directory.
 
-3. Make sure your machine's current Python interpreter is set to the project's required version of Python, and then create a virtual environment. You can use any third-paty tool that manages Python environments (e.g., pipenv, poetry), or you can use Python's built-in `venv` module (make sure you're at the top of the project directory):
+3. Make sure your machine's current Python interpreter is set to the project's required version of Python, and then create a virtual environment. You can use any third-party tool that manages Python environments (e.g., pipenv, poetry), or you can use Python's built-in `venv` module (make sure you're at the top of the project directory):
     ```bash
     python -m venv .venv
     ```
