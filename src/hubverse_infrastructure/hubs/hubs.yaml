@@ -5,5 +5,8 @@ hubs:
 - hub: hubverse-cloud
   org: Infectious-Disease-Modeling-Hubs
   repo: hubverse-cloud
+- hub: bsweger-flusight-forecast
+  org: bsweger
+  repo: FluSight-forecast-hub
 
 
