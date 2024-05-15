@@ -42,9 +42,43 @@ Each cloud-enabled hub requires several dedicated AWS resources. These resources
 
 ## Onboarding a Hub
 
-TODO: Add detailed instructions for onboarding a hub to the cloud.
-1. Update the `hubs.yaml` file with the hub's name and the desired AWS region.
-2.  Submit a pull request
+Currently, this infrastructure repository is not integrated with actual hub repositories. In other words, it doesn't pull information (_e.g._, the S3 bucket name) from a hub's `admin.json` configuration file. Thus, to host a hub in the Hubverse AWS account, we need to manually add its information to [`hubs.yaml`](src/hubverse_infrastructure/hubs/hubs.yaml).
+
+1. Add a new `hub` entry to [`hubs.yaml`](src/hubverse_infrastructure/hubs/hubs.yaml):
+    - `hub` key: the name of the hub (this value will be used as the S3 bucket name, so make sure it's something unique)
+    - `org`:  the GitHub organization that hosts the hub's repository
+    - `repo`: the name of the hub's repository
+
+    For example:
+    ```yaml
+    - hub: flusight-forecast
+      org: cdcepi
+      repo: FluSight-forecast-hub
+    ```
+
+2. Submit the above changes as a pull request (PR) to this repository.
+3. Shortly after the PR is opened, Pulumi will add a comment about the AWS changes it will make once the PR is merged.
+
+    For example:
+
+    ```
+        Name                                                     Type                                                    Operation
+    +   flusight-forecast                                aws:iam/role:Role                                       create
+    +   flusight-forecast-write-bucket-policy            aws:iam/policy:Policy                                   create
+    +   flusight-forecast-allow                          aws:lambda/permission:Permission                        create
+    +   flusight-forecast-transform-model-output-lambda  aws:iam/rolePolicyAttachment:RolePolicyAttachment       create
+    +   flusight-forecast                                aws:s3/bucket:Bucket                                    create
+    +   flusight-forecast-read-bucket-policy             aws:s3/bucketPolicy:BucketPolicy                        create
+    +   flusight-forecast                                aws:iam/rolePolicyAttachment:RolePolicyAttachment       create
+    +   flusight-forecast-public-access-block            aws:s3/bucketPublicAccessBlock:BucketPublicAccessBlock  create
+    +   flusight-forecast-create-notification            aws:s3/bucketNotification:BucketNotification            create
+    ```
+
+4. If the Pulumi preview looks good, the PR can be merged after a code review. Once the PR is merged, Pulumi will apply the AWS changes.
+5. The hub is now hosted in the Hubverse AWS account.
+
+**Important:** The `org` and `repo` fields are used to create permissions that allow the hub's GitHub workflow to sync data to s3. If these values are not correct, the workflow will fail.
+
 
 ## Dev Setup
 

@@ -106,9 +106,9 @@ def create_model_output_lambda_trigger(
     hub_name: str, hub_bucket: aws.s3.Bucket, model_output_lambda: aws.lambda_.Function
 ) -> aws.s3.BucketNotification:
     """Create the trigger that will invoke the model output lambda when a new file is written to the hub's S3 bucket."""
+
     allow_bucket = aws.lambda_.Permission(
         resource_name=f"{hub_name}-allow",
-        statement_id="AllowExecutionFromS3Bucket",
         action="lambda:InvokeFunction",
         function=model_output_lambda.arn.apply(lambda arn: f"{arn}"),
         principal="s3.amazonaws.com",
