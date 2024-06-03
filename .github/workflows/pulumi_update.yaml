@@ -36,7 +36,7 @@ jobs:
         uses: pulumi/actions@v5
         with:
           command: up
-          stack-name: bsweger/hubverse-aws/hubverse
+          stack-name: hubverse/hubverse-aws/hubverse
           comment-on-pr: true
         env:
           PULUMI_ACCESS_TOKEN: ${{ secrets.BSWEGER_PULUMI_DEMO }}
