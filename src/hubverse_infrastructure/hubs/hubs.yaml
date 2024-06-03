@@ -11,3 +11,7 @@ hubs:
 - hub: cdcepi-flusight-forecast-hub
   org: cdcepi
   repo: FluSight-forecast-hub
+- hub: temp-flusight-archive-hub
+  org: Infectious-Disease-Modeling-Hubs
+  repo: flusight1_hub
+
