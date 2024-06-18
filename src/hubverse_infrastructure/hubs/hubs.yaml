@@ -3,7 +3,7 @@
 # hub = admin.json: cloud.storage
 hubs:
 - hub: hubverse-cloud
-  org: Infectious-Disease-Modeling-Hubs
+  org: hubverse-org
   repo: hubverse-cloud
 - hub: bsweger-flusight-forecast
   org: bsweger
@@ -12,6 +12,6 @@ hubs:
   org: cdcepi
   repo: FluSight-forecast-hub
 - hub: temp-flusight-archive-hub
-  org: Infectious-Disease-Modeling-Hubs
+  org: hubverse-org
   repo: flusight1_hub
 
