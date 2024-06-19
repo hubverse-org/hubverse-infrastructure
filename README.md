@@ -88,10 +88,12 @@ The code here uses a simple .yaml file that lists the cloud-enabled hubs. For ea
 
 This repo uses two GitHub workflows to manage Hubverse AWS resources. Each workflow assumes an IAM role with the permissions it needs (via GitHub's OIDC identity provider).
 
-| GitHub Workflow                                                 | Trigger                | Infrastructure Permissions  |
-| --------------------------------------------------------------- | ---------------------- | --------------------------- |
-| [`pulumi_preview.yaml`](.github/workflows/pulumi_preview.yaml)  | PR to `main` & ad-hoc  | read-only                   |
-| [`pulumi_update.yaml`](.github/workflows/pulumi_update.yaml)    | merge to `main`        | read update create delete   |
+The IAM roles below are used by Pulumi, thus they are not managed by Pulumi. Instead, they were created manually in the Hubverse AWS account.
+
+| GitHub Workflow                                                 | Trigger                | Hubverse AWS Role Assumed          |
+| --------------------------------------------------------------- | ---------------------- | ---------------------------------- |
+| [`pulumi_preview.yaml`](.github/workflows/pulumi_preview.yaml)  | PR to `main` & ad-hoc  | hubverse-infrastructure-read-role  |
+| [`pulumi_update.yaml`](.github/workflows/pulumi_update.yaml)    | merge to `main`        | hubverse-infrastructure-write-role |
 
 
 If you're a Hubverse developer who wants to use Pulumi locally (using [Pulumi's CLI](https://www.pulumi.com/docs/cli/), for example), you will need access to AWS credentials with the same permissions used by the GitHub workflows.
