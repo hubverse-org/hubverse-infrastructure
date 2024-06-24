@@ -14,4 +14,6 @@ hubs:
 - hub: temp-flusight-archive-hub
   org: hubverse-org
   repo: flusight1_hub
-
+- hub: flusight-hub-archive
+  org: hubverse-org
+  repo: flusight_hub_archive
