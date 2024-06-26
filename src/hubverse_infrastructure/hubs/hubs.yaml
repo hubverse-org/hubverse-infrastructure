@@ -11,9 +11,6 @@ hubs:
 - hub: cdcepi-flusight-forecast-hub
   org: cdcepi
   repo: FluSight-forecast-hub
-- hub: temp-flusight-archive-hub
-  org: hubverse-org
-  repo: flusight1_hub
 - hub: uscdc-flusight-hub-v1
   org: hubverse-org
   repo: flusight_hub_archive
