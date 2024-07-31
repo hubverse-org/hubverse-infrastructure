@@ -4,7 +4,7 @@
 <img src="https://www.pulumi.com/images/pricing/team-oss.svg" alt="Pulumi Team edition for open source" style="width:100px; float: left; margin-right: 10px;"/>
 
 This repository uses [Pulumi](https://www.pulumi.com/) to provision cloud resources for the Hubverse, a project that provides open tools for collaborative modeling:
-https://hubdocs.readthedocs.io/en/latest/.
+https://hubverse.io/en/latest/.
 
 ## Background
 
