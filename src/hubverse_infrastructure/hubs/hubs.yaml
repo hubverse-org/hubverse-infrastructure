@@ -14,3 +14,6 @@ hubs:
 - hub: uscdc-flusight-hub-v1
   org: hubverse-org
   repo: flusight_hub_archive
+- hub: example-complex-forecast-hub
+  org: hubverse-org
+  repo: example-complex-forecast-hub
