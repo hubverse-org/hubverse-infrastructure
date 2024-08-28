@@ -68,7 +68,7 @@ def make_bucket_public(bucket: aws.s3.Bucket, bucket_name: str):
 
 def add_s3_cors_config(bucket: aws.s3.Bucket, bucket_name: str):
     """
-    Add CORS configuration to a spciified S3 bucket.
+    Add CORS configuration to a specified S3 bucket.
     Having a CORS policy allows S3 buckets to be accessed via HTTP requests.
     """
 
