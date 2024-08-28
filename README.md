@@ -98,6 +98,21 @@ The IAM roles below are used by Pulumi, thus they are not managed by Pulumi. Ins
 
 If you're a Hubverse developer who wants to use Pulumi locally (using [Pulumi's CLI](https://www.pulumi.com/docs/cli/), for example), you will need access to AWS credentials with the same permissions used by the GitHub workflows.
 
+### Updating permissions used by Pulumi
+
+If you get a 403 error from the `pulumi_update` GitHub action (or when running `pulumi up` manually), it's likely the Pulumi code is trying to make a change that the AWS IAM `hubverse-infrastructure-write-role` role doesn't have permission to make.
+
+`hubverse-infrastructure-write-role` is attached to an IAM policy that describes what it's allowed to do: `hubverse-infrastructure-write-policy`. Thus, to grant additional permissions required for Pulumi operations, you will need to update `hubverse-infrastructure-write-policy` via the AWS console:
+
+1. Log in to the AWS console.
+2. Click on _Services_ in the top left corner, and then click on _IAM_.
+3. From the _IAM_ dashboard, find the _Access management_ section in the left-hand menu and click on _Policies_.
+4. When the list of policies appears, use the search box to find `hubverse-infrastructure-write-policy` and click on it.
+5. Click the _Edit_ button to update the policy.
+
+**Note:** To make these changes, you will need to have a Hubverse AWS login with console permission and with policy update permissions.
+
+
 ### Setup instructions
 
 1. Make sure you have the required version on Python installed on your machine (see [`.python-version`](.python-version)).
