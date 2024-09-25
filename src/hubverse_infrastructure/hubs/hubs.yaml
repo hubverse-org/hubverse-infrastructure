@@ -11,6 +11,9 @@ hubs:
 - hub: cdcepi-flusight-forecast-hub
   org: cdcepi
   repo: FluSight-forecast-hub
+- hub: covid19-forecast-hub
+  org: CDCgov
+  repo: covid19-forecast-hub
 - hub: uscdc-flusight-hub-v1
   org: hubverse-org
   repo: flusight_hub_archive
