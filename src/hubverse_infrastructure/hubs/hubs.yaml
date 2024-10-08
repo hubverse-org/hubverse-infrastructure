@@ -20,3 +20,8 @@ hubs:
 - hub: example-complex-forecast-hub
   org: hubverse-org
   repo: example-complex-forecast-hub
+# special case: covid-clade-counts is not hub
+- hub: covid-clade-counts
+  org: reichlab
+  repo: covid-clade-counts
+
