@@ -20,3 +20,6 @@ hubs:
 - hub: example-complex-forecast-hub
   org: hubverse-org
   repo: example-complex-forecast-hub
+- hub: covid-variant-nowcast-hub
+  org: reichlab
+  repo: variant-nowcast-hub
