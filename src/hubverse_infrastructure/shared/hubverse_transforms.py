@@ -169,7 +169,8 @@ def create_transform_lambda(
         s3_bucket=s3_bucket,
         s3_key=s3_key,
         tags={"hub": "hubverse"},
-        timeout=210,
+        memory_size=500,
+        timeout=600,
         opts=ResourceOptions(depends_on=[hubverse_asset_bucket]),
     )
 
