@@ -121,7 +121,7 @@ def create_model_output_lambda_trigger(
         lambda_functions=[
             aws.s3.BucketNotificationLambdaFunctionArgs(
                 lambda_function_arn=model_output_lambda.arn.apply(lambda arn: f"{arn}"),
-                events=["s3:ObjectCreated:*"],
+                events=["s3:ObjectCreated:*", "s3:ObjectRemoved:*"],
                 filter_prefix="raw/",
             )
         ],
