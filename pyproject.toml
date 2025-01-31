@@ -15,7 +15,7 @@ dependencies = [
     "cloudpathlib[s3]",
     "pulumi<4.0.0,>=3.0.0",
     "pulumi-aws<7.0.0,>=6.0.2",
-    "PyYAML>=6.0.1",
+    "PyYAML>=6.0.1"
 ]
 
 [project.optional-dependencies]
