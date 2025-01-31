@@ -27,13 +27,13 @@ jobs:
           pip install -r requirements/dev-requirements.txt
 
       - name: Configure AWS credentials 🔐
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@4fc4975a852c8cd99761e2de1f4ba73402e44dd9 # v4.0.3
         with:
           role-to-assume: arn:aws:iam::767397675902:role/hubverse-infrastructure-write-role
           aws-region: us-east-1
 
       - name: Updating infrastructure 🛠️
-        uses: pulumi/actions@v5
+        uses: pulumi/actions@13b8b7177d6fb736766875dac9b78aab07bd785f # v6.0.1
         with:
           command: up
           stack-name: hubverse/hubverse-aws/hubverse
