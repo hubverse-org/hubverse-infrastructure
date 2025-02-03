@@ -77,6 +77,7 @@ def add_s3_cors_config(bucket: aws.s3.Bucket, bucket_name: str):
         bucket=bucket.id,
         cors_rules=[
             {
+                "id": f"{bucket_name}-cors-rules",
                 "allowed_headers": ["*"],
                 "allowed_methods": [
                     "GET",
