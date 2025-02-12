@@ -8,7 +8,12 @@ def create_bucket(hub_name: str) -> aws.s3.Bucket:
     (for simplicity, in this demo we're setting the bucket name to the hub name)
     """
 
-    hub_bucket = aws.s3.Bucket(hub_name, bucket=hub_name, tags={"hub": hub_name})
+    hub_bucket = aws.s3.Bucket(
+        hub_name,
+        bucket=hub_name,
+        tags={"hub": hub_name},
+        versioning={"enabled": True},
+    )
 
     return hub_bucket
 
