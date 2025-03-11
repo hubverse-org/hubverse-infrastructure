@@ -33,12 +33,12 @@ jobs:
           role-to-assume: arn:aws:iam::767397675902:role/hubverse-infrastructure-read-role
           aws-region: us-east-1
 
-      - name: Previewing infrastructure 👀
-        uses: pulumi/actions@13b8b7177d6fb736766875dac9b78aab07bd785f # v6.0.1
-        with:
-          command: preview
-          stack-name: hubverse/hubverse-aws/hubverse
-          comment-on-pr: true
-          diff: true
-        env:
-          PULUMI_ACCESS_TOKEN: ${{ secrets.BSWEGER_PULUMI_DEMO }}
+      # - name: Previewing infrastructure 👀
+      #   uses: pulumi/actions@13b8b7177d6fb736766875dac9b78aab07bd785f # v6.0.1
+      #   with:
+      #     command: preview
+      #     stack-name: hubverse/hubverse-aws/hubverse
+      #     comment-on-pr: true
+      #     diff: true
+      #   env:
+      #     PULUMI_ACCESS_TOKEN: ${{ secrets.BSWEGER_PULUMI_DEMO }}
