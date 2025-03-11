@@ -159,3 +159,5 @@ To add a new dependency:
     ```bash
     pip install -r requirements/dev-requirements.txt
     ```
+
+Coming soon: Pulumi OIDC
