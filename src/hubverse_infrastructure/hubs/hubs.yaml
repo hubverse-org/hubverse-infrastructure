@@ -23,3 +23,7 @@ hubs:
 - hub: covid-variant-nowcast-hub
   org: reichlab
   repo: variant-nowcast-hub
+- hub: fancy-oidc-hub
+  org: reichlab
+  repo: fancy-oidc-hub
+
