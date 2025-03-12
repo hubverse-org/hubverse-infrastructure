@@ -13,6 +13,17 @@ def create_bucket(hub_name: str) -> aws.s3.Bucket:
         bucket=hub_name,
         tags={"hub": hub_name},
         versioning={"enabled": True},
+        # allow bucket access via http
+        cors_rules=[{
+            "allowed_headers": ["*"],
+            "allowed_methods": [
+                "GET",
+                "HEAD",
+            ],
+            "allowed_origins": ["*"],
+            "expose_headers": [],
+            "max_age_seconds": 3000,
+        }]
     )
 
     return hub_bucket
@@ -71,34 +82,8 @@ def make_bucket_public(bucket: aws.s3.Bucket, bucket_name: str):
     )
 
 
-def add_s3_cors_config(bucket: aws.s3.Bucket, bucket_name: str):
-    """
-    Add CORS configuration to a specified S3 bucket.
-    Having a CORS policy allows S3 buckets to be accessed via HTTP requests.
-    """
-
-    aws.s3.BucketCorsConfigurationV2(
-        resource_name=f"{bucket_name}-bucket-cors-config",
-        bucket=bucket.id,
-        cors_rules=[
-            {
-                "id": f"{bucket_name}-cors-rules",
-                "allowed_headers": ["*"],
-                "allowed_methods": [
-                    "GET",
-                    "HEAD",
-                ],
-                "allowed_origins": ["*"],
-                "expose_headers": [],
-                "max_age_seconds": 3000,
-            }
-        ],
-    )
-
-
 def create_s3_infrastructure(hub_info: dict) -> aws.s3.Bucket:
     hub_name = hub_info["hub"]
     bucket = create_bucket(hub_name)
     make_bucket_public(bucket, hub_name)
-    add_s3_cors_config(bucket, hub_name)
     return bucket
