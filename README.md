@@ -17,7 +17,7 @@ GitHub action that will securely sync their model output, target data, and confi
 The `hubverse-infrastructure` repository contains the [Pulumi](https://www.pulumi.com/)-based infrastructure-as-code
 project that manages hub-supporting AWS components.
 
-The code here uses a simple .yaml file that lists the cloud-enabled hubs.
+The code here uses a YAML file that lists the cloud-enabled hubs.
 For each hub listed in the file, the Pulumi entry point invokes a Python function that provisions the required
 AWS resources.
 
