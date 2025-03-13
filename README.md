@@ -156,7 +156,7 @@ required for Pulumi operations, you will need to update `hubverse-infrastructure
 5. Click the _Edit_ button to update the policy.
 
 > [!IMPORTANT]
-> To make these changes, you will need a Hubverse AWS with:
+> To make these changes, you will need a Hubverse AWS login with:
 >
 > - console permission
 > - policy update permissions
