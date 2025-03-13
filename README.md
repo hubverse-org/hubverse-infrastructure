@@ -52,6 +52,9 @@ Each cloud-enabled hub requires several dedicated AWS resources. These resources
 
 ## Onboarding a hub
 
+Other than the ability to submit a PR to this repository, no special permissions are required for onboarding a hub to
+the Hubverse AWS account.
+
 To begin syncing an existing Hubverse hub to S3:
 
 1. Add a new `hub` entry to [`hubs.yaml`](src/hubverse_infrastructure/hubs/hubs.yaml):
@@ -96,8 +99,22 @@ To begin syncing an existing Hubverse hub to S3:
 
 ## Permissions
 
-The Hubverse uses Pulumi's GitHub app to deploy infrastructure changes to AWS. The GitHub app initiates a deployment
-process when:
+This section provides an overview of the GitHub, Pulumi, and AWS components that enable us to manage infrastructure via
+the code in this repository. Additionally, there are instructions for updating those components if necessary. For
+example:
+
+- We want to manage a new type of AWS resource via Pulumi and need to update AWS permissions accordingly
+- We want to update the configuration of our Pulumi deployments (_e.g._, change the triggering branch, update the
+  session duration of Pulumi's temporary AWS credentials)
+
+### Overview
+
+The Hubverse uses [Pulumi's GitHub app](https://www.pulumi.com/docs/iac/using-pulumi/continuous-delivery/github-app/)
+to deploy infrastructure changes to AWS. The app is installed on the
+[`hubverse-org` GitHub organization](https://github.com/hubverse-org) and currently has access to this repository.
+Only a hubverse-org administrator can change the Pulumi GitHub app settings.
+
+The GitHub app initiates a deployment process when:
 
 - A PR is opened against the this repo's `main` branch (for previewing changes)
 - A PR is merged into the `main` branch (for applying changes)
@@ -137,7 +154,34 @@ subgraph Hubverse AWS
 end
 ```
 
-### Updating permissions used by Pulumi
+### Pulumi configuration
+
+The Hubverse has an [open source team edition](https://github.com/pulumi/team-edition-for-open-source/issues/26) of
+Pulumi, which gives us access to automated CI/CD deployments and allows us to have a team of up to 10 members.
+
+To view the Hubverse's Pulumi-managed resources, you will need to create a Pulumi account and be added to the Pulumi
+hubverse organization by an existing administrator. As a team member, you will have access to:
+
+- `hubverse-aws`: the [Pulumi project](https://www.pulumi.com/docs/iac/concepts/projects/) the corresponds to this
+  repository. Project configuration is managed in [`Pulumi.yaml`](Pulumi.yaml).
+- `hubverse`: the [Pulumi stack](https://www.pulumi.com/docs/iac/concepts/stacks/) that contains the production
+  AWS resources managed by Pulumi. A Pulumi project can contain multiple stacks, but we only use one. Stack settings
+  are managed in [`Pulumi.hubverse.yaml`](Pulumi.hubverse.yaml).
+- [Pulumi deployments](https://www.pulumi.com/docs/pulumi-cloud/deployments/): events that represent a preview of
+  proposed infrastructure updates or a log of completed infrastructure updates. Deployments are triggered by GitHub
+  pull requests and merges.
+
+Each Pulumi stack has settings that control deployment behavior. For example:
+
+- `source control settings`: the GitHub repository and branch that trigger deployments (in our case, the `main` branch
+  of `hubverse-infrastructure`)
+- `GitHub settings`: what actions should trigger a deployment (_e.g._, run a preview when someone opens a PR)
+- `Pre-run commands`: commands to run before a deployment (we use these commands to install Python dependencies)
+- `OpenID Connect`: identifier (ARN) of the OIDC provider that Pulumi uses to authenticate to AWS
+
+If any of the above changes, you will need to update the `hubverse/hubverse-aws` deployment settings.
+
+### Updating Pulumi's AWS permissions
 
 If a Pulumi deployment returns a 403 error, it's likely the Pulumi code is trying to make a change that the AWS IAM
 `hubverse-infrastructure-write-role` role doesn't have permission to make.
