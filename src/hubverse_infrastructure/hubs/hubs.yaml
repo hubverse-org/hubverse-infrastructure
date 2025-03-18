@@ -23,3 +23,6 @@ hubs:
 - hub: covid-variant-nowcast-hub
   org: reichlab
   repo: variant-nowcast-hub
+- hub: reichlab-flu-metrocast-hub
+  org: reichlab
+  repo: flu-metrocast
