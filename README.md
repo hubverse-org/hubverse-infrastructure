@@ -50,10 +50,14 @@ Each cloud-enabled hub requires several dedicated AWS resources. These resources
       of the hub's repository.
     - A _permission policy_ that grants write access to the hub's S3 bucket.
 
-## Onboarding a hub
+## Onboarding a hub to AWS
 
 Other than the ability to submit a PR to this repository, no special permissions are required for onboarding a hub to
 the Hubverse AWS account.
+
+Note that these instructions are for provisioning a hub's AWS resources.
+There are a few other steps to fully onboard a hub to the cloud. Please
+see the [Hubverse documentation](https://hubverse.io/en/latest/) for a complete guide.
 
 To begin syncing an existing Hubverse hub to S3:
 
