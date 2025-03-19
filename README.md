@@ -50,10 +50,14 @@ Each cloud-enabled hub requires several dedicated AWS resources. These resources
       of the hub's repository.
     - A _permission policy_ that grants write access to the hub's S3 bucket.
 
-## Onboarding a hub
+## Onboarding a hub to AWS
 
 Other than the ability to submit a PR to this repository, no special permissions are required for onboarding a hub to
 the Hubverse AWS account.
+
+Note that these instructions are for provisioning a hub's AWS resources.
+There are a few other steps to fully onboard a hub to the cloud. Please
+see the [Hubverse documentation](https://hubverse.io/en/latest/) for a complete guide.
 
 To begin syncing an existing Hubverse hub to S3:
 
@@ -120,7 +124,7 @@ The GitHub app initiates a deployment process when:
 - A PR is merged into the `main` branch (for applying changes)
 
 These deployments are configured to use the Pulumi OIDC identity provider created in our Hubverse AWS account. The OIDC
-provider allows Pulumi to request temporary AWS credentials and assume the following AWS role when peforming previews
+provider allows Pulumi to request temporary AWS credentials and assume the following AWS role when performing previews
 and updates:
 
 - `hubverse-infrastructure-write-role`
@@ -205,49 +209,6 @@ required for Pulumi operations, you will need to update `hubverse-infrastructure
 > - console permission
 > - policy update permissions
 
-### Setup instructions
+## Local development
 
-1. Make sure you have the required version on Python installed on your machine (see [`.python-version`](.python-version)).
-
-    **note:** [pyenv](https://github.com/pyenv/pyenv) is a good tool for managing multiple version of Python on a single machine.
-
-2. Clone this repository and navigate to the project directory.
-
-3. Make sure your machine's current Python interpreter is set to the project's required version of Python, and then create a virtual environment. You can use any third-party tool that manages Python environments (e.g., pipenv, poetry), or you can use Python's built-in `venv` module (make sure you're at the top of the project directory):
-    ```bash
-    python -m venv .venv
-    ```
-
-4. Activate the virtual environment. If you created the environment using the `venv` command above, you can activate it as follows:
-    ```bash
-    source .venv/bin/activate
-    ```
-
-5. Install the project's dependencies:
-    ```bash
-    pip install -r requirements/dev-requirements.txt && pip install -e .
-    ```
-
-
-### Adding dependencies
-
-This project uses `pip-tools` to generate requirements files from `pyproject.toml`.  To add new dependencies, you will need to install [`pip-tools`](https://pip-tools.readthedocs.io/en/latest/) into your virtual environment (or use [`pipx`](https://github.com/pypa/pipx) to make it available on your machine globally).
-
-To add a new dependency:
-
-1. Add dependency to the `dependencies` section `pyproject.toml` (if it's a dev dependency, add it to the `dev` section of `[project.optional-dependencies]`).
-
-2. Regenerate the `requirements.txt` file (you can skip this if you've only added a dev dependency):
-    ```bash
-    pip-compile --output-file=requirements/requirements.txt pyproject.toml
-    ```
-
-3. Regenerate the `requirements-dev.txt` file (you will need to do this every time, even if you haven't added a dev dependency):
-    ```bash
-    pip-compile --extra=dev --output-file=requirements/dev-requirements.txt pyproject.toml
-    ```
-
-4. Install the updated dependencies into your virtual environment:
-    ```bash
-    pip install -r requirements/dev-requirements.txt
-    ```
+See [CONTRIBUTING.md](CONTRIBUTING.md) for instructions on setting up a local development environment.

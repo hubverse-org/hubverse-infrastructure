@@ -1,1 +1,0 @@
-This is a file to test syncing data from github to S3.
