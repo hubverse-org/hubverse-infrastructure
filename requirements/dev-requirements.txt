@@ -42,7 +42,7 @@ pulumi==3.112.0
     #   pulumi-aws
 pulumi-aws==6.29.0
     # via hubverse-infrastructure (pyproject.toml)
-pytest==8.1.1
+pytest==8.3.5
     # via hubverse-infrastructure (pyproject.toml)
 python-dateutil==2.9.0.post0
     # via botocore
