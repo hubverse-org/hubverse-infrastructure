@@ -24,7 +24,7 @@ jmespath==1.0.1
     # via
     #   boto3
     #   botocore
-mypy==1.9.0
+mypy==1.15.0
     # via hubverse-infrastructure (pyproject.toml)
 mypy-extensions==1.0.0
     # via mypy
