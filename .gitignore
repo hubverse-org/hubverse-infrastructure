@@ -3,6 +3,9 @@
 *.envrc
 *.env
 
+# We're not using the uv lockfile (yet)
+uv.lock
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
