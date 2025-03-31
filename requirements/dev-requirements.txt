@@ -8,7 +8,7 @@ boto3==1.37.16
     # via
     #   hubverse-infrastructure (pyproject.toml)
     #   cloudpathlib
-botocore==1.37.16
+botocore==1.37.23
     # via
     #   boto3
     #   s3transfer
