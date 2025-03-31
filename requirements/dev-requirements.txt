@@ -22,7 +22,7 @@ dill==0.3.9
     # via pulumi
 docopt==0.6.2
     # via pytest-watch
-grpcio==1.66.2
+grpcio==1.68.1
     # via pulumi
 iniconfig==2.1.0
     # via pytest
