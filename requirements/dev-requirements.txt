@@ -74,7 +74,7 @@ six==1.17.0
     # via
     #   pulumi
     #   python-dateutil
-types-pyyaml==6.0.12.20241230
+types-pyyaml==6.0.12.20250402
     # via hubverse-infrastructure (pyproject.toml)
 typing-extensions==4.12.2
     # via mypy
