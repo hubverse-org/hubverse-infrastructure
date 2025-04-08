@@ -4,11 +4,11 @@ arpeggio==2.0.2
     # via parver
 attrs==25.3.0
     # via parver
-boto3==1.37.16
+boto3==1.37.29
     # via
     #   hubverse-infrastructure (pyproject.toml)
     #   cloudpathlib
-botocore==1.37.16
+botocore==1.37.29
     # via
     #   boto3
     #   s3transfer
@@ -22,7 +22,7 @@ dill==0.3.9
     # via pulumi
 docopt==0.6.2
     # via pytest-watch
-grpcio==1.66.2
+grpcio==1.68.1
     # via pulumi
 iniconfig==2.1.0
     # via pytest
@@ -62,7 +62,7 @@ pyyaml==6.0.2
     # via
     #   hubverse-infrastructure (pyproject.toml)
     #   pulumi
-ruff==0.11.1
+ruff==0.11.4
     # via hubverse-infrastructure (pyproject.toml)
 s3transfer==0.11.4
     # via boto3
@@ -76,7 +76,7 @@ six==1.17.0
     #   python-dateutil
 types-pyyaml==6.0.12.20250402
     # via hubverse-infrastructure (pyproject.toml)
-typing-extensions==4.12.2
+typing-extensions==4.13.1
     # via mypy
 urllib3==2.3.0
     # via botocore
