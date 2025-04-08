@@ -18,7 +18,7 @@ debugpy==1.8.13
     # via pulumi
 dill==0.3.9
     # via pulumi
-grpcio==1.66.2
+grpcio==1.68.1
     # via pulumi
 jmespath==1.0.1
     # via
