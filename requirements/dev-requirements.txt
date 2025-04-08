@@ -4,24 +4,20 @@ arpeggio==2.0.2
     # via parver
 attrs==25.3.0
     # via parver
-boto3==1.37.16
+boto3==1.37.29
     # via
     #   hubverse-infrastructure (pyproject.toml)
     #   cloudpathlib
-botocore==1.37.16
+botocore==1.37.29
     # via
     #   boto3
     #   s3transfer
 cloudpathlib==0.21.0
     # via hubverse-infrastructure (pyproject.toml)
-colorama==0.4.6
-    # via pytest-watch
 debugpy==1.8.13
     # via pulumi
 dill==0.3.9
     # via pulumi
-docopt==0.6.2
-    # via pytest-watch
 grpcio==1.66.2
     # via pulumi
 iniconfig==2.1.0
@@ -44,25 +40,21 @@ pluggy==1.5.0
     # via pytest
 protobuf==4.25.6
     # via pulumi
-pulumi==3.157.0
+pulumi==3.160.0
     # via
     #   hubverse-infrastructure (pyproject.toml)
     #   pulumi-aws
-pulumi-aws==6.72.0
+pulumi-aws==6.75.0
     # via hubverse-infrastructure (pyproject.toml)
 pytest==8.3.5
-    # via
-    #   hubverse-infrastructure (pyproject.toml)
-    #   pytest-watch
-pytest-watch==4.2.0
-    # via pulumi
+    # via hubverse-infrastructure (pyproject.toml)
 python-dateutil==2.9.0.post0
     # via botocore
 pyyaml==6.0.2
     # via
     #   hubverse-infrastructure (pyproject.toml)
     #   pulumi
-ruff==0.11.1
+ruff==0.11.4
     # via hubverse-infrastructure (pyproject.toml)
 s3transfer==0.11.4
     # via boto3
@@ -76,9 +68,7 @@ six==1.17.0
     #   python-dateutil
 types-pyyaml==6.0.12.20250402
     # via hubverse-infrastructure (pyproject.toml)
-typing-extensions==4.12.2
+typing-extensions==4.13.1
     # via mypy
 urllib3==2.3.0
     # via botocore
-watchdog==6.0.0
-    # via pytest-watch
