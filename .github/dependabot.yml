@@ -19,6 +19,7 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    open-pull-requests-limit: 10
     # group all run-of-the mill updates into a single pull request
     groups:
       py-updates:
@@ -26,3 +27,4 @@ updates:
         update-types:
           - patch
           - minor
+
