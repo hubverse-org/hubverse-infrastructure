@@ -23,3 +23,6 @@ hubs:
 - hub: reichlab-flu-metrocast-hub
   org: reichlab
   repo: flu-metrocast
+- hub: bsweger-flusight-forecast
+  org: bsweger
+  repo: FluSight-forecast-hub
