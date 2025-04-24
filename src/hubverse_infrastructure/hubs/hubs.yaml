@@ -5,9 +5,6 @@ hubs:
 - hub: hubverse-cloud
   org: hubverse-org
   repo: hubverse-cloud
-- hub: bsweger-flusight-forecast
-  org: bsweger
-  repo: FluSight-forecast-hub
 - hub: cdcepi-flusight-forecast-hub
   org: cdcepi
   repo: FluSight-forecast-hub
