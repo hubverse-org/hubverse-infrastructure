@@ -158,6 +158,33 @@ subgraph Hubverse AWS
 end
 ```
 
+#### When a Pulumi deployment fails
+
+Occasionally, a Pulumi deployment fails. For example, if it tries to delete an S3 bucket that contains data,
+or when `hubs.yaml` specifies an S3 bucket name that already exists.
+
+When this happens, Pulumi will make the changes it can and report errors
+for anything that failed. In other words, Pulumi doesn't group requested infrastructure
+changes into a single pass/fail group.
+
+You can't re-run a deployment, but there are generally two ways to recover from a failure:
+
+1. Run a [Pulumi update](https://www.pulumi.com/docs/iac/cli/commands/pulumi_up/#pulumi-up):
+
+    - From Pulumi cloud: navigate to the
+     [hubverse stack](https://app.pulumi.com/hubverse/hubverse-aws/hubverse).
+     From the _Actions_ drop-down, choose _Update_ and then click _Deploy_.
+    - Using the [Pulumi CLI](https://www.pulumi.com/docs/iac/cli/):
+    run `pulumi up` from the command line.
+
+    This is the best option if the problem can be resolved within AWS itself
+    (for example, you need to manually delete S3 contents before offboarding a hub).
+
+2. Update `hubs.yaml` and submit a follow-up PR to this repo.
+
+   This is best option if the issue was caused by a problem in the
+   `hubverse-infrastructure` code (like a invalid S3 bucket name).
+
 ### Pulumi configuration
 
 The Hubverse has an [open source team edition](https://github.com/pulumi/team-edition-for-open-source/issues/26) of
