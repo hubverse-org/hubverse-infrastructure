@@ -4,7 +4,7 @@
 <img src="https://www.pulumi.com/images/pricing/team-oss.svg" alt="Pulumi Team edition for open source" style="width:100px; float: left; margin-right: 10px;"/>
 
 This repository uses [Pulumi](https://www.pulumi.com/) to provision cloud resources for the Hubverse, a project that
-provides open tools for collaborative modeling: [https://hubverse.io/en/latest/](https://hubverse.io/en/latest/).
+provides open tools for collaborative modeling: [https://docs.hubverse.io/en/latest/](https://docs.hubverse.io/en/latest/).
 
 ## Background
 
@@ -57,7 +57,7 @@ the Hubverse AWS account.
 
 Note that these instructions are for provisioning a hub's AWS resources.
 There are a few other steps to fully onboard a hub to the cloud. Please
-see the [Hubverse documentation](https://hubverse.io/en/latest/) for a complete guide.
+see the [Hubverse documentation](https://docs.hubverse.io/en/latest/) for a complete guide.
 
 To begin syncing an existing Hubverse hub to S3:
 
