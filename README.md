@@ -208,10 +208,16 @@ subgraph Hubverse AWS
 end
 ```
 
-#### When a Pulumi deployment fails
+#### Troubleshooting failed Pulumi deployments
 
-Occasionally, a Pulumi deployment fails. For example, if it tries to delete an S3 bucket that contains data,
-or when `hubs.yaml` specifies an S3 bucket name that already exists.
+Occasionally, a Pulumi deployment fails. These failures generally fall into
+one of two categories.
+
+##### AWS resource failures
+
+If a PR instructs Pulumi to do something not allowed by AWS, Pulumi will. An
+example is trying to delete an S3 bucket that contains data, or when `hubs.yaml`
+specifies an S3 bucket name that already exists.
 
 When this happens, Pulumi will make the changes it can and report errors
 for anything that failed. In other words, Pulumi doesn't group requested infrastructure
@@ -234,6 +240,27 @@ You can't re-run a deployment, but there are generally two ways to recover from 
 
    This is best option if the issue was caused by a problem in the
    `hubverse-infrastructure` code (like a invalid S3 bucket name).
+
+##### Pulumi authentication failure
+
+Infrequently, a Pulumi deployment triggered by a PR from this repo fails
+with a the following error:
+
+```bash
+1 $ /pulumi-deploy-executor cache restore --workDir="/deployment" --stackIdentity="hubverse/hubverse-aws/hubverse"
+2 Restoring cache for stack hubverse/hubverse-aws/hubverse
+3 Error: failed to get runtime: failed to select stack: exit status 255
+4 code: 255
+5 stdout:
+6 stderr: Logging in using access token from PULUMI_ACCESS_TOKEN
+7 error: [401] Unauthorized: No credentials provided or are invalid.
+```
+
+The root cause is unknown, but the nuclear "turn it off and on again" option is for an administrator of the
+`hubverse-org` GitHub organization to uninstall and re-install the Pulumi GitHub app.
+
+This process can be initiated from Pulumi cloud, on the
+[Hubverse stack's integrations page](https://app.pulumi.com/hubverse/hubverse-aws/hubverse/settings/integrations).
 
 ### Pulumi configuration
 
@@ -285,6 +312,12 @@ required for Pulumi operations, you will need to update `hubverse-infrastructure
 >
 > - console permission
 > - policy update permissions
+
+### Pulumi/GitHub integration
+
+The [Hubverse Pulumi stack](https://app.pulumi.com/hubverse/hubverse-aws/hubverse) has an integration configured to
+the `hubverse-org` GitHub organization. This integration enables the Pulumi GitHub app to listen for Pulumi events
+from this repository (`hubverse-infrastructure`) and trigger subsequence deployments.
 
 ## Local development
 
