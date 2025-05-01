@@ -101,6 +101,56 @@ To begin syncing an existing Hubverse hub to S3:
 > configuration file. The `org` and `repo` fields are used to create permissions that allow the hub's GitHub workflow
 > to sync data to s3. If these values are not correct, the workflow will fail.
 
+### AWS components
+
+Pulumi manages two types of Hubverse AWS resources:
+
+- Shared: these are used by all hubs
+- Hub-specific: these are created once per hub
+
+It's not necessary to understand the details unless you're debugging or developing new features. Expand the
+section below for a list of Pulumi resources mapped to their AWS names and a brief description of what each one does.
+
+
+
+<details>
+
+**Shared resources**
+
+The following Pulumi resources were created once and are shared across hubs.
+
+| Pulumi resource name                              | AWS name                                              | Type                            | Description
+|---------------------------------------------------|------------------------------------------------------|----------------------------------|-------------|
+| hubverse-cloudwatch-write-policy                  | arn:aws:iam::767397675902:policy/hubverse-cloudwatch-write-policy | IAM policy | Allows write access to CloudWatch logs.
+| hubverse-transform-model-output                   | arn:aws:lambda:us-east-1:767397675902:function:hubverse-transform-model-output | Lambda function | Transforms user-submitted model-output files to parquet format.
+| hubverse-transform-model-output-cloudwatch-policy | n/a | RolePolicyAttachment | Attaches hubverse-cloudwatch-write-policy to the hubverse-transform-model-output Lambda.
+
+**Hub-specific resources**
+
+Below is a list of the hub-specific Pulumi resources, using the CDC FluSight Forecast Hub as an example.
+
+<summary>Pulumi <-> AWS mapping and description</summary>
+
+| Pulumi resource name                          | AWS name                                              | Type                            | Description
+|-----------------------------------------------|------------------------------------------------------|----------------------------------|-------------|
+| cdcepi-flusight-forecast-hub                  | arn:aws:s3:::cdcepi-flusight-forecast-hub            | S3 bucket                        | AWS bucket stores the hub's data/
+| cdcepi-flusight-forecast-read-bucket-policy   | n/a                                                  | Bucket policy                    | Allows public read access to the hub's S3 bucket. Attached to the above bucket.
+| cdcepi-flusight-forecast-public-access-block  | n/a                                                  | S3 bucket public access block    | Updates AWS default settings that disable public access (required for bucket policy above to work).
+| cdcepi-flusight-forecast                      | arn:aws:iam::767397675902:role/cdcepi-flusight-forecast-hub | IAM role                        | An AWS role that is assumed by hub's GitHub actions.
+| cdcepi-flusight-forecast-write-bucket-policy  | arn:aws:iam::767397675902:policy/cdcepi-flusight-forecast-hub-write-bucket-policy | IAM policy | A policy that allows write access to the hub's S3 bucket.
+| cdcepi-flusight-forecast                      | n/a                                                  | RolePolicyAttachment             | Attaches cdcepi-flusight-forecast-write-bucket-policy to the cdcepi-flusight-forecast IAM role.
+| cdcepi-flusight-forecast-create-notification  | cdcepi-flusight-forecast-hub-notification-args       | S3 notification                  | Emits S3 notifications when data in the `/raw` folder of the hub's S3 bucket is updated.
+| cdcepi-flusight-forecast-allow                | n/a                                                  | Lambda permission                | Allows above S3 notification to trigger the transform-model-output-lambda function.
+| cdcepi-flusight-forecast-transform-model-output-lambda | n/a                                         | RolePolicyAttachment             | Attaches cdcepi-flusight-forecast-write-bucket-policy to hubverse-transform-model-output-role (so lambda function can write transformed data to the hub's S3 bucket).
+
+**Miscellaneous resources**
+
+Additionally, Pulumi manages a catch-all S3 bucket called `hubverse-assets`. This is a bucket for internal use
+and is not used by our hosted hubs (for example, the code for the hubverse-transform-model-output Lambda function
+is stored here).
+
+</details>
+
 ## Permissions
 
 This section provides an overview of the GitHub, Pulumi, and AWS components that enable us to manage infrastructure via
@@ -158,10 +208,16 @@ subgraph Hubverse AWS
 end
 ```
 
-#### When a Pulumi deployment fails
+#### Troubleshooting failed Pulumi deployments
 
-Occasionally, a Pulumi deployment fails. For example, if it tries to delete an S3 bucket that contains data,
-or when `hubs.yaml` specifies an S3 bucket name that already exists.
+Occasionally, a Pulumi deployment fails. These failures generally fall into
+one of two categories.
+
+##### AWS resource failures
+
+If a PR instructs Pulumi to do something not allowed by AWS, Pulumi will. An
+example is trying to delete an S3 bucket that contains data, or when `hubs.yaml`
+specifies an S3 bucket name that already exists.
 
 When this happens, Pulumi will make the changes it can and report errors
 for anything that failed. In other words, Pulumi doesn't group requested infrastructure
@@ -184,6 +240,27 @@ You can't re-run a deployment, but there are generally two ways to recover from 
 
    This is best option if the issue was caused by a problem in the
    `hubverse-infrastructure` code (like a invalid S3 bucket name).
+
+##### Pulumi authentication failure
+
+Infrequently, a Pulumi deployment triggered by a PR from this repo fails
+with a the following error:
+
+```bash
+1 $ /pulumi-deploy-executor cache restore --workDir="/deployment" --stackIdentity="hubverse/hubverse-aws/hubverse"
+2 Restoring cache for stack hubverse/hubverse-aws/hubverse
+3 Error: failed to get runtime: failed to select stack: exit status 255
+4 code: 255
+5 stdout:
+6 stderr: Logging in using access token from PULUMI_ACCESS_TOKEN
+7 error: [401] Unauthorized: No credentials provided or are invalid.
+```
+
+The root cause is unknown, but the nuclear "turn it off and on again" option is for an administrator of the
+`hubverse-org` GitHub organization to uninstall and re-install the Pulumi GitHub app.
+
+This process can be initiated from Pulumi cloud, on the
+[Hubverse stack's integrations page](https://app.pulumi.com/hubverse/hubverse-aws/hubverse/settings/integrations).
 
 ### Pulumi configuration
 
@@ -235,6 +312,12 @@ required for Pulumi operations, you will need to update `hubverse-infrastructure
 >
 > - console permission
 > - policy update permissions
+
+### Pulumi/GitHub integration
+
+The [Hubverse Pulumi stack](https://app.pulumi.com/hubverse/hubverse-aws/hubverse) has an integration configured to
+the `hubverse-org` GitHub organization. This integration enables the Pulumi GitHub app to listen for Pulumi events
+from this repository (`hubverse-infrastructure`) and trigger subsequence deployments.
 
 ## Local development
 
