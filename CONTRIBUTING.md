@@ -7,7 +7,7 @@ This is an internal Hubverse package used to manage cloud infrastructure, so the
 for the Hubverse development team.
 
 For general info about contributing to Hubverse packages, please see the
-[**hubverse contributing guide**](https://hubverse.io/en/latest/overview/contribute.html).
+[**hubverse contributing guide**](https://docs.hubverse.io/en/latest/overview/contribute.html).
 
 ## Onboarding a hub
 
@@ -67,7 +67,7 @@ the requirements.txt file directly.
     ```
 
 Once you've confirmed that the project is set up correctly, make your changes and follow the Hubverse's
-[Python development workflow](https://hubverse.io/en/latest/developer/python.html).
+[Python development workflow](https://docs.hubverse.io/en/latest/developer/python.html).
 
 ### Adding, updating, or removing project dependencies
 
