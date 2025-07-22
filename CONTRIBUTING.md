@@ -7,7 +7,7 @@ This is an internal Hubverse package used to manage cloud infrastructure, so the
 for the Hubverse development team.
 
 For general info about contributing to Hubverse packages, please see the
-[**hubverse contributing guide**](https://docs.hubverse.io/en/latest/overview/contribute.html).
+[**hubverse community page**](https://hubverse.io/community/).
 
 ## Onboarding a hub
 
