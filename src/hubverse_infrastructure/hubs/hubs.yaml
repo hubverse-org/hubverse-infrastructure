@@ -26,3 +26,6 @@ hubs:
 - hub: bsweger-flusight-forecast
   org: bsweger
   repo: FluSight-forecast-hub
+- hub: rsv-forecast-hub
+  org: CDCgov
+  repo: rsv-forecast-hub
