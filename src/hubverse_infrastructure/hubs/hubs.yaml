@@ -29,3 +29,6 @@ hubs:
 - hub: rsv-forecast-hub
   org: CDCgov
   repo: rsv-forecast-hub
+- hub: covid19-forecast-hub-archive
+  org: hubverse-org
+  repo: covid19-forecast-hub-archive
