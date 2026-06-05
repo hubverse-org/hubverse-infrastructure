@@ -102,6 +102,52 @@ def attach_bucket_write_policy(resource_name: str, role: aws.iam.Role, bucket_wr
     aws.iam.RolePolicyAttachment(resource_name=resource_name, role=role.name, policy_arn=bucket_write_policy.id)
 
 
+def create_lambda_bucket_write_policy(hub_names: list[str], model_output_lambda_role: aws.iam.Role):
+    """Grant the shared transform Lambda write access to every hub bucket.
+
+    There is a single transform Lambda (and a single role it assumes), but it must write
+    transformed output back to every hub's bucket. Attaching one managed policy per hub to
+    that shared role hits the AWS PoliciesPerRole quota (10 by default, 20 hard max), so
+    instead we attach a single inline policy that enumerates all hub buckets explicitly.
+
+    Buckets are enumerated explicitly (not via a wildcard) to keep the Lambda's effective
+    permissions identical to a per-hub grant and preserve least privilege. Inline policies
+    do not count against the managed-policy PoliciesPerRole quota. See issue #132.
+    """
+
+    bucket_arns = [f"arn:aws:s3:::{hub_name}" for hub_name in hub_names]
+    object_arns = [f"arn:aws:s3:::{hub_name}/*" for hub_name in hub_names]
+
+    s3_write_policy = aws.iam.get_policy_document(
+        statements=[
+            aws.iam.GetPolicyDocumentStatementArgs(
+                actions=[
+                    "s3:ListBucket",
+                ],
+                resources=bucket_arns,
+            ),
+            aws.iam.GetPolicyDocumentStatementArgs(
+                actions=[
+                    "s3:PutObject",
+                    "s3:PutObjectAcl",
+                    "s3:GetObject",
+                    "s3:GetObjectAcl",
+                    "s3:DeleteObject",
+                ],
+                resources=object_arns,
+            ),
+        ]
+    )
+
+    policy_name = "hubverse-transform-model-output-write-bucket-policy"
+    aws.iam.RolePolicy(
+        resource_name=policy_name,
+        name=policy_name,
+        role=model_output_lambda_role.name,
+        policy=s3_write_policy.json,
+    )
+
+
 def create_model_output_lambda_trigger(
     hub_name: str, hub_bucket: aws.s3.Bucket, model_output_lambda: aws.lambda_.Function
 ) -> aws.s3.BucketNotification:
@@ -139,11 +185,9 @@ def create_iam_infrastructure(hub_info: dict):
     hub = hub_info["hub"]
     hub_bucket = hub_info["hub_bucket"]
     model_output_lambda = hub_info["model_output_lambda"]
-    model_output_lambda_role = hub_info["model_output_lambda_role"]
 
     trust_policy = create_trust_policy(org, repo)
     github_role = create_github_role(hub, trust_policy)
     s3_write_policy = create_bucket_write_policy(hub)
     attach_bucket_write_policy(hub, github_role, s3_write_policy)
-    attach_bucket_write_policy(f"{hub}-transform-model-output-lambda", model_output_lambda_role, s3_write_policy)
     create_model_output_lambda_trigger(hub, hub_bucket, model_output_lambda)
