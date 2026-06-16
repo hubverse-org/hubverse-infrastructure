@@ -32,3 +32,6 @@ hubs:
 - hub: covid19-forecast-hub-archive
   org: hubverse-org
   repo: covid19-forecast-hub-archive
+- hub: bdbv-modeling-hub
+  org: InsightNet-US
+  repo: BDBV-Modeling-Hub
