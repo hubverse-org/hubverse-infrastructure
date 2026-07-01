@@ -35,3 +35,6 @@ hubs:
 - hub: bdbv-modeling-hub
   org: InsightNet-US
   repo: BDBV-Modeling-Hub
+- hub: dashboard-test-hub
+  org: hubverse-org
+  repo: dashboard-test-hub
